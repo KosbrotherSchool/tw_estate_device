@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+
+<!--
+    A DrawerLayout is indended to be used as the top-level content view
+    using match_parent for both width and height to consume the full space available.
+-->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+
+   	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+         >
+         <RelativeLayout 
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent" >
+ 
+    		<fragment
+        		android:id="@+id/map"
+        		android:name="com.google.android.gms.maps.MapFragment"
+        		android:layout_width="match_parent"
+        		android:layout_height="match_parent"/>
+    		
+    		<LinearLayout 
+		        android:id="@+id/linear_title"
+		        android:layout_width="match_parent"
+		        android:layout_height="48dp"
+		        android:orientation="horizontal" 
+		        android:background="#80000000"
+		        android:padding="4dp" 
+		        android:gravity="center_vertical"
+		        >
+		
+		        <ImageView android:id="@+id/image_estate"
+		            android:layout_width="25dp"
+		        	android:layout_height="25dp"
+		        	android:background="@drawable/marker_red"
+		        	android:layout_marginLeft="5dp"
+		            />
+		         <TextView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="25dp"
+		            android:text="買賣"
+		            android:layout_marginLeft="5dp"
+		            android:textColor="@color/white"
+		             />
+		         <ImageView android:id="@+id/image_estate"
+		            android:layout_width="25dp"
+		        	android:layout_height="25dp"
+		        	android:background="@drawable/marker_green"
+		        	android:layout_marginLeft="5dp"
+		            />
+		         <TextView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="25dp"
+		            android:text="租賃"
+		            android:layout_marginLeft="5dp"
+		            android:textColor="@color/white"
+		             />
+		          <ImageView android:id="@+id/image_estate"
+		            android:layout_width="25dp"
+		        	android:layout_height="25dp"
+		        	android:background="@drawable/marker_presale"
+		        	android:layout_marginLeft="5dp"
+		            />
+		          <TextView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="25dp"
+		            android:text="預售"
+		            android:layout_marginLeft="5dp"
+		            android:textColor="@color/white"
+		             />
+		          
+		          <TextView 
+		            android:layout_width="fill_parent"
+		            android:layout_height="25dp"
+		            android:text="單位:萬元/坪"
+		            android:gravity="right"
+		            android:textColor="@color/white"
+		             />
+		          
+		    </LinearLayout>
+ 			
+    		<LinearLayout
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		   	android:layout_alignParentRight="true"
+    		   	android:layout_below="@id/linear_title"
+    		   	android:orientation="vertical"
+    		   	android:layout_marginTop="10dp"
+    		   	android:layout_marginRight="10dp"
+    		     >
+	    		<ImageButton 
+	    		    android:layout_width="36dp"
+			        android:layout_height="36dp"
+			        android:src="@drawable/icon_access_location"
+			        android:background="@drawable/grid_selector"
+	    		    />
+	    		<ImageButton 
+	    		    android:layout_width="36dp"
+			        android:layout_height="36dp"
+			        android:src="@drawable/icon_layers"
+			        android:layout_marginTop="10dp"
+			        android:background="@drawable/grid_selector"
+	    		    />
+	    		<ImageButton 
+	    		    android:layout_width="36dp"
+			        android:layout_height="36dp"
+			        android:src="@drawable/icon_filter"
+			        android:layout_marginTop="10dp"
+			        android:background="@drawable/grid_selector"
+	    		    />
+    		</LinearLayout>
+    		
+		</RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="270dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/left_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#EBEBEB" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
