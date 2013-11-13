@@ -2,6 +2,8 @@ package com.kosbrother.realestate;
 
 import java.util.ArrayList;
 
+import com.kosbrother.realestate.adapter.ListEstateAdapter;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
@@ -41,9 +43,11 @@ public class ListActivity extends FragmentActivity {
 	private EntryAdapter mDrawerAdapter;
 	
 	private EditText            search;
-   private MenuItem            itemSearch;
-   private static final int    ID_SEARCH   = 5;
+    private MenuItem            itemSearch;
+    private static final int    ID_SEARCH   = 5;
    
+    private ListEstateAdapter mAdapter;
+    private ListView mainListView;
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +55,13 @@ public class ListActivity extends FragmentActivity {
        setContentView(R.layout.drawer_list_layout);
        
        
-       mActionBar = createActionBarHelper();
+        mActionBar = createActionBarHelper();
 		mActionBar.init();
        
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerListView = (ListView) findViewById(R.id.left_list_view);
 		
-       mDrawerLayout.setDrawerListener(new DemoDrawerListener());
+        mDrawerLayout.setDrawerListener(new DemoDrawerListener());
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		
@@ -66,7 +70,11 @@ public class ListActivity extends FragmentActivity {
 				R.string.drawer_close);	
        
 		setDrawerLayout();
-
+		
+		mainListView = (ListView) findViewById(R.id.list_estates);
+		mAdapter = new ListEstateAdapter(ListActivity.this, MainActivity.mEstates);
+		mainListView.setAdapter(mAdapter);
+		
    }
 
    private void setDrawerLayout() {

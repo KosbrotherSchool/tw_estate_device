@@ -44,7 +44,7 @@
     		<LinearLayout 
 		        android:id="@+id/linear_title"
 		        android:layout_width="match_parent"
-		        android:layout_height="48dp"
+		        android:layout_height="36dp"
 		        android:orientation="horizontal" 
 		        android:background="#80000000"
 		        android:padding="4dp" 
@@ -111,21 +111,21 @@
     		   	android:layout_marginRight="10dp"
     		     >
 	    		<ImageButton 
-	    		    android:layout_width="36dp"
-			        android:layout_height="36dp"
+	    		    android:layout_width="42dp"
+			        android:layout_height="42dp"
 			        android:src="@drawable/icon_access_location"
 			        android:background="@drawable/grid_selector"
 	    		    />
 	    		<ImageButton 
-	    		    android:layout_width="36dp"
-			        android:layout_height="36dp"
+	    		    android:layout_width="42dp"
+			        android:layout_height="42dp"
 			        android:src="@drawable/icon_layers"
 			        android:layout_marginTop="10dp"
 			        android:background="@drawable/grid_selector"
 	    		    />
 	    		<ImageButton 
-	    		    android:layout_width="36dp"
-			        android:layout_height="36dp"
+	    		    android:layout_width="42dp"
+			        android:layout_height="42dp"
 			        android:src="@drawable/icon_filter"
 			        android:layout_marginTop="10dp"
 			        android:background="@drawable/grid_selector"

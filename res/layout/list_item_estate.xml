@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/list_estate_background"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+         >
+        <LinearLayout android:id="@+id/line_1"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+	        <TextView 
+	            android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:text="門牌:"
+	       		android:textSize="@dimen/info_window_text_size"
+	            />
+	        <TextView android:id="@+id/text_info_address"
+	            android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:text="頭前路2巷1~50號"
+	       		android:textSize="@dimen/info_window_text_size"
+	            />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/line_2"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+	        <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="建造日期："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_house_age"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="20年"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+	        </LinearLayout>
+	        <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="交易日期："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_buy_date"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="102/3"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		     </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/line_3"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+	         <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="坪數："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_ground_area"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="29.81"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+	         </LinearLayout>
+	         <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="交易類型："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_estate_type"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="房地"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+	         </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/line_4"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+	         <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="總價："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_total_price"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="700 萬"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		    </LinearLayout>
+		    <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >    
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="建物類型："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_buiding_type"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="公寓"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		     </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/line_5"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+		    <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             > 
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="單價："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_buy_persquare_feet"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="23.48萬/坪"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		    </LinearLayout>    
+		    <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >     
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="交易樓層："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_buy_layer"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="2 / 5"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		    </LinearLayout>    
+        </LinearLayout>
+        <LinearLayout android:id="@+id/line_6"
+            android:layout_width="fill_parent"
+       		android:layout_height="wrap_content"
+       		android:orientation="horizontal"
+             >
+		    <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             > 
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="格局："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_rooms"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="3房2廳2衛"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		    </LinearLayout>        
+		    <LinearLayout
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	             >     
+		        <TextView 
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="管理組織："
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		        <TextView android:id="@+id/text_info_is_guarding"
+		            android:layout_width="wrap_content"
+		       		android:layout_height="wrap_content"
+		       		android:text="無"
+		       		android:textSize="@dimen/info_window_text_size"
+		            />
+		    </LinearLayout>        
+        </LinearLayout>         
+    </LinearLayout>
+    
+    
+</LinearLayout>

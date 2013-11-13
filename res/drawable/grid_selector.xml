@@ -19,7 +19,7 @@
     </item>  
     <item>        
         <shape>  
-            <solid android:color="#ffffff"/>
+            <solid android:color="#80000000"/>
             <corners  
                 android:radius="2dp" />   
         </shape>  
@@ -27,6 +27,7 @@
 </selector> 
 
         <!-- 
+        android:background="#80000000"
             <gradient  
                 android:startColor="#ff8c00"  
                 android:endColor="#FFFFFF"  

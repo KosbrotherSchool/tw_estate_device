@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity implements
     
     private LatLng currentLatLng;
     
-    public ArrayList<RealEstate> mEstates = new ArrayList<RealEstate>();
+    public static ArrayList<RealEstate> mEstates = new ArrayList<RealEstate>();
     private LayoutInflater inflater;
     
     
@@ -427,7 +427,7 @@ public class MainActivity extends FragmentActivity implements
             Location currentLocation = mLocationClient.getLastLocation();
             currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng).zoom(12).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng).zoom(14).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             
             new GetEstatesTask().execute();

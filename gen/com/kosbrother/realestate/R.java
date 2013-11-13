@@ -211,11 +211,12 @@ containing a value of this type.
         public static final int icon_view_grid=0x7f020029;
         public static final int icon_view_list=0x7f02002a;
         public static final int info_window_background=0x7f02002b;
-        public static final int marker_background=0x7f02002c;
-        public static final int marker_blue=0x7f02002d;
-        public static final int marker_green=0x7f02002e;
-        public static final int marker_presale=0x7f02002f;
-        public static final int marker_red=0x7f020030;
+        public static final int list_estate_background=0x7f02002c;
+        public static final int marker_background=0x7f02002d;
+        public static final int marker_blue=0x7f02002e;
+        public static final int marker_green=0x7f02002f;
+        public static final int marker_presale=0x7f020030;
+        public static final int marker_red=0x7f020031;
     }
     public static final class id {
         public static final int drawer_layout=0x7f050006;
@@ -265,7 +266,8 @@ containing a value of this type.
         public static final int item_marker=0x7f030004;
         public static final int item_window_info=0x7f030005;
         public static final int list_item_entry=0x7f030006;
-        public static final int list_item_section=0x7f030007;
+        public static final int list_item_estate=0x7f030007;
+        public static final int list_item_section=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f090000;
