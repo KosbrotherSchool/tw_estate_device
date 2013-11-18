@@ -2,14 +2,14 @@ package com.kosbrother.realestate;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.kosbrother.realestate.fragment.DetailFragment;
 
-public class DetailActivity extends FragmentActivity {
+public class DetailActivity extends SherlockFragmentActivity {
     int NUM_ITEMS;
 
     MyAdapter mAdapter;
