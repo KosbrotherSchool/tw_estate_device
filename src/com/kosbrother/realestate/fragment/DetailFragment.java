@@ -5,15 +5,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kosbrother.imageloader.ImageLoader;
 import com.kosbrother.realestate.Datas;
 import com.kosbrother.realestate.R;
 import com.kosbrother.realestate.api.InfoParserApi;
 
 public class DetailFragment extends Fragment {
     int mNum;
-
+    public ImageLoader  imageLoader;
     /**
      * Create a new instance of CountingFragment, providing "num"
      * as an argument.
@@ -36,6 +38,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+        imageLoader = new ImageLoader(getActivity(), 100);
     }
 
     /**
@@ -46,6 +49,8 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detail_pager, container, false);
+        
+        ImageView image = (ImageView) v.findViewById(R.id.imageview_detail);
         
         // trade detail
         TextView text_address = (TextView) v.findViewById(R.id.text_detail_address);
@@ -103,6 +108,11 @@ public class DetailFragment extends Fragment {
         text_parking_exchange_area.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates.get(mNum).parking_exchange_area));
         text_parking_total_price.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(mNum).parking_total_price));
         
+        // set image
+        String x_lat = Double.toString(Datas.mEstates.get(mNum).x_lat);
+        String y_long = Double.toString(Datas.mEstates.get(mNum).y_long);
+        String url = "http://maps.google.com/maps/api/staticmap?center="+x_lat+","+ y_long+"&zoom=17&markers=color:red%7Clabel:%7C"+x_lat+","+ y_long+"&size=400x150&language=zh-TW&sensor=false";
+        imageLoader.DisplayImage(url, image);
         
         return v;
     }
