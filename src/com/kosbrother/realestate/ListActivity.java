@@ -72,7 +72,7 @@ public class ListActivity extends FragmentActivity {
 		setDrawerLayout();
 		
 		mainListView = (ListView) findViewById(R.id.list_estates);
-		mAdapter = new ListEstateAdapter(ListActivity.this, MainActivity.mEstates);
+		mAdapter = new ListEstateAdapter(ListActivity.this, Datas.mEstates);
 		mainListView.setAdapter(mAdapter);
 		
    }

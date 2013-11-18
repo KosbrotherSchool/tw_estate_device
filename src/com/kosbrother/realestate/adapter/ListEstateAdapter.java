@@ -14,9 +14,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kosbrother.realestate.DetailActivity;
 import com.kosbrother.realestate.R;
 import com.kosbrother.realestate.api.InfoParserApi;
 import com.kosbrother.realestate.entity.RealEstate;
+
 
 
 public class ListEstateAdapter extends BaseAdapter {
@@ -87,6 +89,23 @@ public class ListEstateAdapter extends BaseAdapter {
     			);
     	textIsGuarding.setText(data.get(position).is_guarding);
         
+    	vi.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	
+//            	TextView idView = (TextView) v.findViewById(R.id.text_playlist_id);
+//				String id = idView.getText().toString();			
+//				TextView titleView = (TextView) v.findViewById(R.id.text_playlist_title);
+//				String title = titleView.getText().toString();
+            	
+            	Intent intent = new Intent(activity, DetailActivity.class);
+				activity.startActivity(intent);
+				
+                
+            }
+        });
+    	
+    	
         return vi;
     }
 }

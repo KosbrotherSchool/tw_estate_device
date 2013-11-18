@@ -7,6 +7,6 @@
 	<dimen name="info_window_text_size">12dp</dimen>
 	<dimen name="detail_text_size">13dp</dimen>
 	<dimen name="detail_title_size">15dp</dimen>
-	<dimen name="detail_address_size">17dp</dimen>
+	<dimen name="detail_address_size">18dp</dimen>
     
 </resources>

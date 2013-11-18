@@ -92,7 +92,6 @@ public class MainActivity extends FragmentActivity implements
     
     private LatLng currentLatLng;
     
-    public static ArrayList<RealEstate> mEstates = new ArrayList<RealEstate>();
     private LayoutInflater inflater;
     
     
@@ -218,26 +217,26 @@ public class MainActivity extends FragmentActivity implements
                 	TextView textRooms = (TextView) v.findViewById(R.id.text_info_rooms);
                 	TextView textIsGuarding = (TextView) v.findViewById(R.id.text_info_is_guarding);
                 	
-                	textAddress.setText(mEstates.get(position).estate_address);
+                	textAddress.setText(Datas.mEstates.get(position).estate_address);
                 	
-                	textHouseAge.setText(InfoParserApi.parseHouseAge(mEstates.get(position).date_built));
-                	textBuyDate.setText(InfoParserApi.parseBuyDate(mEstates.get(position).date_buy));
+                	textHouseAge.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(position).date_built));
+                	textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(position).date_buy));
                 	
-                	textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(mEstates.get(position).building_exchange_area));
-                	textEstateType.setText(InfoParserApi.parseEstateType(mEstates.get(position).estate_type));
+                	textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates.get(position).building_exchange_area));
+                	textEstateType.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(position).estate_type));
                 	
-                	textTotalPrice.setText(InfoParserApi.parseTotalBuyMoney(mEstates.get(position).buy_total_price));
-                	textBuildingType.setText(InfoParserApi.parseEstateType(mEstates.get(position).building_type));
+                	textTotalPrice.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(position).buy_total_price));
+                	textBuildingType.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(position).building_type));
                 	
-                	textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(mEstates.get(position).buy_per_square_feet));
-                	textBuyLayer.setText(mEstates.get(position).buy_layer + "/" + Integer.toString(mEstates.get(position).building_total_layer));
+                	textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates.get(position).buy_per_square_feet));
+                	textBuyLayer.setText(Datas.mEstates.get(position).buy_layer + "/" + Integer.toString(Datas.mEstates.get(position).building_total_layer));
                 	
                 	textRooms.setText(
-                			Integer.toString(mEstates.get(position).building_room)+"房" +
-                			Integer.toString(mEstates.get(position).building_sitting_room)+"廳" +
-                			Integer.toString(mEstates.get(position).building_rest_room)+"衛浴"
+                			Integer.toString(Datas.mEstates.get(position).building_room)+"房" +
+                			Integer.toString(Datas.mEstates.get(position).building_sitting_room)+"廳" +
+                			Integer.toString(Datas.mEstates.get(position).building_rest_room)+"衛浴"
                 			);
-                	textIsGuarding.setText(mEstates.get(position).is_guarding);
+                	textIsGuarding.setText(Datas.mEstates.get(position).is_guarding);
                 	
                     return v;
                 }
@@ -641,7 +640,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		protected Object doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			mEstates = EstateApi.getAroundAll(currentLatLng.latitude, currentLatLng.longitude);
+			Datas.mEstates = EstateApi.getAroundAll(currentLatLng.latitude, currentLatLng.longitude);
 
 			return null;
 		}
@@ -649,8 +648,8 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		protected void onPostExecute(Object result) {
 //			super.onPostExecute(result);
-			for(int i=0; i<mEstates.size(); i++ ){
-				LatLng newLatLng = new LatLng(mEstates.get(i).x_lat,mEstates.get(i).y_long);
+			for(int i=0; i<Datas.mEstates.size(); i++ ){
+				LatLng newLatLng = new LatLng(Datas.mEstates.get(i).x_lat,Datas.mEstates.get(i).y_long);
 				View layout = inflater.inflate(R.layout.item_marker,null);   
 				layout.setLayoutParams(new LinearLayout.LayoutParams(
 						LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT     
@@ -660,16 +659,16 @@ public class MainActivity extends FragmentActivity implements
 				
 				//for later marker info window use
 				MarkerOptions marker = new MarkerOptions().position(newLatLng).title(Integer.toString(i));
-				markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(mEstates.get(i).buy_per_square_feet));
+				markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates.get(i).buy_per_square_feet));
 				
-				if(mEstates.get(i).estate_group==1){
+				if(Datas.mEstates.get(i).estate_group==1){
 					markerView.setImageResource(R.drawable.marker_red);
 					marker.snippet("estate");
-				}else if(mEstates.get(i).estate_group==2){
+				}else if(Datas.mEstates.get(i).estate_group==2){
 					markerView.setImageResource(R.drawable.marker_green);
 					marker.snippet("rent");
 //					googleMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
-				}else if(mEstates.get(i).estate_group==3){
+				}else if(Datas.mEstates.get(i).estate_group==3){
 					markerView.setImageResource(R.drawable.marker_presale);
 					marker.snippet("pre_sale");
 //					googleMap.addMarker(new MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_presale)));
