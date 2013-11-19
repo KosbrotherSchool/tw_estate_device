@@ -241,7 +241,11 @@
 		       		android:textSize="@dimen/info_window_text_size"
 		            />
 		    </LinearLayout>        
-        </LinearLayout>         
+        </LinearLayout>
+        <ImageView android:id="@+id/image_list"
+            android:layout_width="fill_parent"
+       		android:layout_height="120dp"
+            />         
     </LinearLayout>
     
     

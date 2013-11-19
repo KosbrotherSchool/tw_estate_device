@@ -14,6 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kosbrother.imageloader.ImageLoader;
+import com.kosbrother.realestate.Datas;
 import com.kosbrother.realestate.DetailActivity;
 import com.kosbrother.realestate.R;
 import com.kosbrother.realestate.api.InfoParserApi;
@@ -26,12 +28,14 @@ public class ListEstateAdapter extends BaseAdapter {
     private final Activity        activity;
     private final ArrayList<RealEstate> data;
     private static LayoutInflater inflater = null;
+    private ImageLoader  imageLoader;
 //    private String mChannelTitle;
 
     public ListEstateAdapter(Activity a, ArrayList<RealEstate> d) {
         activity = a;
         data = d;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        imageLoader = new ImageLoader(activity, 100);
     }
 
     public int getCount() {
@@ -67,6 +71,13 @@ public class ListEstateAdapter extends BaseAdapter {
     	
     	TextView textRooms = (TextView) vi.findViewById(R.id.text_info_rooms);
     	TextView textIsGuarding = (TextView) vi.findViewById(R.id.text_info_is_guarding);
+    	
+    	ImageView imageView = (ImageView) vi.findViewById(R.id.image_list);
+    	String x_lat = Double.toString(data.get(position).x_lat);
+        String y_long = Double.toString(data.get(position).y_long);
+        String url = "http://maps.google.com/maps/api/staticmap?center="+x_lat+","+ y_long+"&zoom=17&markers=color:red%7Clabel:%7C"+x_lat+","+ y_long+"&size=400x150&language=zh-TW&sensor=false";
+        imageLoader.DisplayImage(url, imageView);
+    	
     	
     	textAddress.setText(data.get(position).estate_address);
     	

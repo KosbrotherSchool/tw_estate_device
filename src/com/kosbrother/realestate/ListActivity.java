@@ -1,8 +1,11 @@
 package com.kosbrother.realestate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -49,6 +52,8 @@ public class ListActivity extends SherlockFragmentActivity {
    
     private ListEstateAdapter mAdapter;
     private ListView mainListView;
+    
+    private int currentSortPosition;
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -192,12 +197,60 @@ public class ListActivity extends SherlockFragmentActivity {
 				Toast.makeText(ListActivity.this, "Map", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.menu_sorting:
-				Toast.makeText(ListActivity.this, "Sorting", Toast.LENGTH_SHORT).show();
+	            	
+//				mSelectedItems = new ArrayList();  // Where we track the selected items
+			    AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+			    // Set the dialog title
+			    builder.setTitle("順序排列")
+			    // Specify the list array, the items to be selected by default (null for none),
+			    // and the listener through which to receive callbacks when items are selected
+			           .setSingleChoiceItems(R.array.list_sort, currentSortPosition,
+			                      new DialogInterface.OnClickListener() {									
+									@Override
+									public void onClick(DialogInterface dialog, int position) {
+//										Toast.makeText(ListActivity.this, Integer.toString(position), Toast.LENGTH_SHORT).show();
+										sortingByPosition(position);
+										currentSortPosition = position;
+										dialog.cancel();
+									}								
+								})
+			           ;
+			    builder.show();
+				
 				break;
 			}
        }
 		return super.onOptionsItemSelected(item);
 	}
+   
+   private void sortingByPosition(int position) {
+	   switch (position){
+	   	case 0:
+	   		Collections.sort(Datas.mEstates, new Datas.BuyPerSquareComparator(0));
+	   		break;
+	   	case 1:
+	   		Collections.sort(Datas.mEstates, new Datas.BuyPerSquareComparator(1));
+	   		break;
+	   	case 2:
+	   		Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(0));
+	   		break;
+	   	case 3:
+	   		Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(1));
+	   		break;
+	   	case 4:
+	   		Collections.sort(Datas.mEstates, new Datas.BuildingExchangeAreaComparator(0));
+	   		break;
+	   	case 5:
+	   		Collections.sort(Datas.mEstates, new Datas.BuildingExchangeAreaComparator(1));
+	   		break;
+	   	case 6:
+	   		Collections.sort(Datas.mEstates, new Datas.BuiltDateComparator());
+	   		break;	
+	   }
+	   mAdapter.notifyDataSetChanged();
+	}
+   
+   
    
    private android.view.MenuItem getMenuItem(final MenuItem item) {
        return new android.view.MenuItem() {

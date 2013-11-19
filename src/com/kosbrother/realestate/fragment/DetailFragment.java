@@ -15,7 +15,7 @@ import com.kosbrother.realestate.api.InfoParserApi;
 
 public class DetailFragment extends Fragment {
     int mNum;
-    public ImageLoader  imageLoader;
+    private ImageLoader  imageLoader;
     /**
      * Create a new instance of CountingFragment, providing "num"
      * as an argument.
