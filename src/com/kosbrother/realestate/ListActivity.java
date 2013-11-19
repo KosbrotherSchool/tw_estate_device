@@ -2,30 +2,19 @@ package com.kosbrother.realestate;
 
 import java.util.ArrayList;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.kosbrother.realestate.adapter.ListEstateAdapter;
-
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.InputType;
 import android.view.ActionProvider;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuItem.OnActionExpandListener;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -39,7 +28,11 @@ import at.bartinger.list.item.EntryItem;
 import at.bartinger.list.item.Item;
 import at.bartinger.list.item.SectionItem;
 
-@SuppressLint("NewApi")
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.kosbrother.realestate.adapter.ListEstateAdapter;
+
 public class ListActivity extends SherlockFragmentActivity {
 	 
 //	private ActionBarHelper mActionBar;
