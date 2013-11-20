@@ -110,20 +110,20 @@
     		   	android:layout_marginTop="10dp"
     		   	android:layout_marginRight="10dp"
     		     >
-	    		<ImageButton 
+	    		<ImageButton android:id="@+id/image_btn_focus"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
 			        android:src="@drawable/icon_access_location"
 			        android:background="@drawable/grid_selector"
 	    		    />
-	    		<ImageButton 
+	    		<ImageButton android:id="@+id/image_btn_layers"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
 			        android:src="@drawable/icon_layers"
 			        android:layout_marginTop="10dp"
 			        android:background="@drawable/grid_selector"
 	    		    />
-	    		<ImageButton 
+	    		<ImageButton android:id="@+id/image_btn_filter"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
 			        android:src="@drawable/icon_filter"

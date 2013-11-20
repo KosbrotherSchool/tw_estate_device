@@ -24,12 +24,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -89,6 +91,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private LatLng currentLatLng;
 
 	private LayoutInflater inflater;
+	private ImageButton btnFocusButton;
+	private ImageButton btnLayerButton;
+	private ImageButton btnFilterButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -98,25 +103,48 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-		// // Create a new global location parameters object
-		// mLocationRequest = LocationRequest.create();
-		//
-		// /*
-		// * Set the update interval
-		// */
-		// mLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
-		//
-		// // Use high accuracy
-		// mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		//
-		// // Set the interval ceiling to one minute
-		// mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
-
-		// mActionBar = createActionBarHelper();
-		// mActionBar.init();
-
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerListView = (ListView) findViewById(R.id.left_list_view);
+		btnFocusButton = (ImageButton) findViewById(R.id.image_btn_focus);
+		btnLayerButton = (ImageButton) findViewById(R.id.image_btn_layers);
+		btnFilterButton = (ImageButton) findViewById(R.id.image_btn_filter);
+
+		btnFocusButton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "focus", Toast.LENGTH_SHORT)
+						.show();
+				CameraPosition cameraPosition = new CameraPosition.Builder()
+						.target(currentLatLng).zoom(14).build();
+				googleMap.animateCamera(CameraUpdateFactory
+						.newCameraPosition(cameraPosition));
+			}
+		});
+
+		btnLayerButton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "layer", Toast.LENGTH_SHORT)
+						.show();
+			}
+		});
+
+		btnFilterButton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "filter", Toast.LENGTH_SHORT)
+						.show();
+			}
+		});
 
 		// mDrawerLayout.setDrawerListener(new DemoDrawerListener());
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
@@ -747,79 +775,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 			}
 		};
 	}
-
-	// private ActionBarHelper createActionBarHelper() {
-	// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-	// return new ActionBarHelperICS();
-	// } else {
-	// return new ActionBarHelper();
-	// }
-	// }
-
-	// private class ActionBarHelper {
-	// public void init() {}
-	// public void onDrawerClosed() {}
-	// public void onDrawerOpened() {}
-	// public void setTitle(CharSequence title) {}
-	// }
-
-	// private class ActionBarHelperICS extends ActionBarHelper {
-	// private final ActionBar mActionBar;
-	// private CharSequence mDrawerTitle;
-	// private CharSequence mTitle;
-	//
-	// ActionBarHelperICS() {
-	// mActionBar = getActionBar();
-	// }
-	//
-	// @Override
-	// public void init() {
-	// mActionBar.setDisplayHomeAsUpEnabled(true);
-	// mActionBar.setHomeButtonEnabled(true);
-	// mTitle = mDrawerTitle = getTitle();
-	// }
-	//
-	// @Override
-	// public void onDrawerClosed() {
-	// super.onDrawerClosed();
-	// mActionBar.setTitle(mTitle);
-	// }
-	//
-	// @Override
-	// public void onDrawerOpened() {
-	// super.onDrawerOpened();
-	// mActionBar.setTitle(mDrawerTitle);
-	// }
-	//
-	// @Override
-	// public void setTitle(CharSequence title) {
-	// mTitle = title;
-	// }
-	// }
-
-	// private class DemoDrawerListener implements DrawerLayout.DrawerListener {
-	// @Override
-	// public void onDrawerOpened(View drawerView) {
-	// mDrawerToggle.onDrawerOpened(drawerView);
-	// mActionBar.onDrawerOpened();
-	// }
-	//
-	// @Override
-	// public void onDrawerClosed(View drawerView) {
-	// mDrawerToggle.onDrawerClosed(drawerView);
-	// mActionBar.onDrawerClosed();
-	// }
-	//
-	// @Override
-	// public void onDrawerSlide(View drawerView, float slideOffset) {
-	// mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
-	// }
-	//
-	// @Override
-	// public void onDrawerStateChanged(int newState) {
-	// mDrawerToggle.onDrawerStateChanged(newState);
-	// }
-	// }
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
