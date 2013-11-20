@@ -17,6 +17,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.InputType;
@@ -61,6 +63,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kosbrother.realestate.api.EstateApi;
 import com.kosbrother.realestate.api.InfoParserApi;
+import com.kosbrother.realestate.fragment.CalculatorFragment;
 import com.kosbrother.realestate.fragment.TransparentSupportMapFragment;
 
 public class MainActivity extends SherlockFragmentActivity implements
@@ -197,7 +200,30 @@ public class MainActivity extends SherlockFragmentActivity implements
 			{
 				if (!items.get(position).isSection())
 				{
-					// EntryItem item = (EntryItem)items.get(position);
+					EntryItem item = (EntryItem) items.get(position);
+					
+
+					if (position == 5) // 房貸計算機
+					{
+						Toast.makeText(MainActivity.this, "pos=" + position,
+								Toast.LENGTH_SHORT).show();
+						
+//						// update the main content by replacing fragments
+//						Fragment fragment = CalculatorFragment.newInstance(0);
+////						Bundle args = new Bundle();
+////						// args.putInt(CalculatorFragment.ARG_PLANET_NUMBER,
+////						// position);
+////						fragment.setArguments(args);
+//
+//						FragmentManager fragmentManager = getSupportFragmentManager();
+//						fragmentManager.beginTransaction()
+//								.replace(R.id.map, fragment).commit();
+						
+						Intent intent=new Intent(MainActivity.this, CalculatorActivity.class);
+//						intent.setFlags(Intent.)
+						startActivity(intent);
+
+					}
 					// Intent intent = new Intent(MainActivity.this,
 					// PlaylistVideosActivity.class);
 					// intent.putExtra("ListTitle", item.title);
@@ -335,7 +361,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	protected void onResume()
 	{
 		super.onResume();
-//		initilizeMap();
+		// initilizeMap();
 	}
 
 	@Override

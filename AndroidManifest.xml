@@ -47,6 +47,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" >
         </activity>
+                <activity
+            android:name=".CalculatorActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- Goolge Maps API Key -->
         <meta-data
