@@ -2,8 +2,10 @@ package com.kosbrother.realestate;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -94,7 +96,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private ImageButton btnFocusButton;
 	private ImageButton btnLayerButton;
 	private ImageButton btnFilterButton;
-
+	private int currentMapTypePosition = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -129,9 +132,42 @@ public class MainActivity extends SherlockFragmentActivity implements
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "layer", Toast.LENGTH_SHORT)
-						.show();
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						MainActivity.this);
+				// Set the dialog title
+				builder.setTitle("順序排列").setSingleChoiceItems(
+						R.array.map_type, currentMapTypePosition,
+						new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog,
+									int position)
+							{
+								setMapTypeByPosition(position);
+								currentMapTypePosition = position;
+								dialog.cancel();
+							}
+
+							private void setMapTypeByPosition(int position)
+							{
+								switch (position)
+								{
+								case 0:
+									googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+									break;
+								case 1:
+									googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+									break;
+								case 2:
+									googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+									break;
+								default:
+									break;
+								}
+								
+							}
+						});
+				builder.show();
 			}
 		});
 

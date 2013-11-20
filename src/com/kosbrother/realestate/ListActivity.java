@@ -233,32 +233,22 @@ public class ListActivity extends SherlockFragmentActivity
 				break;
 			case R.id.menu_sorting:
 
-				// mSelectedItems = new ArrayList(); // Where we track the
-				// selected items
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						ListActivity.this);
 				// Set the dialog title
-				builder.setTitle("順序排列")
-				// Specify the list array, the items to be selected by default
-				// (null for none),
-				// and the listener through which to receive callbacks when
-				// items are selected
-						.setSingleChoiceItems(R.array.list_sort,
-								currentSortPosition,
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog,
-											int position)
-									{
-										// Toast.makeText(ListActivity.this,
-										// Integer.toString(position),
-										// Toast.LENGTH_SHORT).show();
-										sortingByPosition(position);
-										currentSortPosition = position;
-										dialog.cancel();
-									}
-								});
+				builder.setTitle("順序排列").setSingleChoiceItems(
+						R.array.list_sort, currentSortPosition,
+						new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog,
+									int position)
+							{
+								sortingByPosition(position);
+								currentSortPosition = position;
+								dialog.cancel();
+							}
+						});
 				builder.show();
 
 				break;
