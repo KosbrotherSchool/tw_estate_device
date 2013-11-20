@@ -9,55 +9,59 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.kosbrother.realestate.fragment.DetailFragment;
 
-public class DetailActivity extends SherlockFragmentActivity {
-    int NUM_ITEMS;
+public class DetailActivity extends SherlockFragmentActivity
+{
+	int NUM_ITEMS;
 
-    MyAdapter mAdapter;
+	MyAdapter mAdapter;
 
-    ViewPager mPager;
+	ViewPager mPager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_pager);
-        NUM_ITEMS = Datas.mEstates.size(); 
-        
-        mAdapter = new MyAdapter(getSupportFragmentManager());
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.fragment_pager);
+		NUM_ITEMS = Datas.mEstates.size();
 
-        mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-        
-        
-        
-//        // Watch for button clicks.
-//        Button button = (Button)findViewById(R.id.goto_first);
-//        button.setOnClickListener(new OnClickListener() {
-//            public void onClick(View v) {
-//                mPager.setCurrentItem(0);
-//            }
-//        });
-//        button = (Button)findViewById(R.id.goto_last);
-//        button.setOnClickListener(new OnClickListener() {
-//            public void onClick(View v) {
-//                mPager.setCurrentItem(NUM_ITEMS-1);
-//            }
-//        });
-    }
+		mAdapter = new MyAdapter(getSupportFragmentManager());
 
-    public class MyAdapter extends FragmentStatePagerAdapter {
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-        }
+		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setAdapter(mAdapter);
 
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
+		// // Watch for button clicks.
+		// Button button = (Button)findViewById(R.id.goto_first);
+		// button.setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// mPager.setCurrentItem(0);
+		// }
+		// });
+		// button = (Button)findViewById(R.id.goto_last);
+		// button.setOnClickListener(new OnClickListener() {
+		// public void onClick(View v) {
+		// mPager.setCurrentItem(NUM_ITEMS-1);
+		// }
+		// });
+	}
 
-        @Override
-        public Fragment getItem(int position) {
-            return DetailFragment.newInstance(position);
-        }
-    }
+	public class MyAdapter extends FragmentStatePagerAdapter
+	{
+		public MyAdapter(FragmentManager fm)
+		{
+			super(fm);
+		}
+
+		@Override
+		public int getCount()
+		{
+			return NUM_ITEMS;
+		}
+
+		@Override
+		public Fragment getItem(int position)
+		{
+			return DetailFragment.newInstance(position);
+		}
+	}
 
 }
