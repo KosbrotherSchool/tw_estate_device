@@ -97,7 +97,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private ImageButton btnLayerButton;
 	private ImageButton btnFilterButton;
 	private int currentMapTypePosition = 0;
-	
+	private LinearLayout leftDrawer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -111,6 +112,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		btnFocusButton = (ImageButton) findViewById(R.id.image_btn_focus);
 		btnLayerButton = (ImageButton) findViewById(R.id.image_btn_layers);
 		btnFilterButton = (ImageButton) findViewById(R.id.image_btn_filter);
+		leftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 
 		btnFocusButton.setOnClickListener(new OnClickListener()
 		{
@@ -118,8 +120,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "focus", Toast.LENGTH_SHORT)
-						.show();
+				// Toast.makeText(MainActivity.this, "focus",
+				// Toast.LENGTH_SHORT)
+				// .show();
 				CameraPosition cameraPosition = new CameraPosition.Builder()
 						.target(currentLatLng).zoom(14).build();
 				googleMap.animateCamera(CameraUpdateFactory
@@ -132,11 +135,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 			@Override
 			public void onClick(View v)
 			{
+
+				// TODO Auto-generated method stub
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						MainActivity.this);
 				// Set the dialog title
-				builder.setTitle("順序排列").setSingleChoiceItems(
-						R.array.map_type, currentMapTypePosition,
+				builder.setTitle("順序排列").setSingleChoiceItems(R.array.map_type,
+						currentMapTypePosition,
 						new DialogInterface.OnClickListener()
 						{
 							@Override
@@ -153,21 +158,25 @@ public class MainActivity extends SherlockFragmentActivity implements
 								switch (position)
 								{
 								case 0:
-									googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+									googleMap
+											.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 									break;
 								case 1:
-									googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+									googleMap
+											.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 									break;
 								case 2:
-									googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+									googleMap
+											.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 									break;
 								default:
 									break;
 								}
-								
+
 							}
 						});
 				builder.show();
+
 			}
 		});
 
@@ -177,8 +186,11 @@ public class MainActivity extends SherlockFragmentActivity implements
 			public void onClick(View v)
 			{
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "filter", Toast.LENGTH_SHORT)
-						.show();
+				// Toast.makeText(MainActivity.this, "filter",
+				// Toast.LENGTH_SHORT)
+				// .show();
+				showFilterDialog();
+
 			}
 		});
 
@@ -226,6 +238,48 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	}
 
+	protected void showFilterDialog()
+	{
+		View vDialog = inflater.inflate(R.layout.filterdialog, null);
+		final LinearLayout layoutMore = (LinearLayout) vDialog
+				.findViewById(R.id.layout_more_filter);
+		LinearLayout layoutMoreBtn = (LinearLayout) vDialog
+				.findViewById(R.id.layout_more_btn);
+		layoutMoreBtn.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (layoutMore.getVisibility() == View.GONE)
+				{
+					layoutMore.setVisibility(View.VISIBLE);
+				} else
+				{
+					layoutMore.setVisibility(View.GONE);
+				}
+
+			}
+		});
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		builder.setTitle("塞選條件");
+		builder.setView(vDialog);
+		builder.setPositiveButton("確定", new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+
+			}
+		}).setNegativeButton("取消", new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+
+			}
+		});
+		builder.show();
+	}
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
@@ -264,12 +318,19 @@ public class MainActivity extends SherlockFragmentActivity implements
 					{
 					case 1:
 						// move to position
+						CameraPosition cameraPosition = new CameraPosition.Builder()
+								.target(currentLatLng).zoom(14).build();
+						googleMap.animateCamera(CameraUpdateFactory
+								.newCameraPosition(cameraPosition));
+						mDrawerLayout.closeDrawer(leftDrawer);
 						break;
 					case 2:
 						// favorite activity
 						break;
 					case 3:
 						// filter dialog
+						showFilterDialog();
+						mDrawerLayout.closeDrawer(leftDrawer);
 						break;
 					case 5:
 						Toast.makeText(MainActivity.this, "pos=" + position,
