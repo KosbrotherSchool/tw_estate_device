@@ -326,6 +326,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 						break;
 					case 2:
 						// favorite activity
+						Intent intent0 = new Intent(MainActivity.this,
+								FavoriteActivity.class);
+						startActivity(intent0);
 						break;
 					case 3:
 						// filter dialog
@@ -333,8 +336,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 						mDrawerLayout.closeDrawer(leftDrawer);
 						break;
 					case 5:
-						Toast.makeText(MainActivity.this, "pos=" + position,
-								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MainActivity.this, "pos=" + position,
+						// Toast.LENGTH_SHORT).show();
 
 						Intent intent = new Intent(MainActivity.this,
 								CalculatorActivity.class);
@@ -342,9 +345,15 @@ public class MainActivity extends SherlockFragmentActivity implements
 						break;
 					case 7:
 						// setting activity
+						Intent intent1 = new Intent(MainActivity.this,
+								SettingActivity.class);
+						startActivity(intent1);
 						break;
 					case 8:
 						// about us
+						Intent intent2 = new Intent(MainActivity.this,
+								AboutUsActivity.class);
+						startActivity(intent2);
 						break;
 					default:
 						break;
