@@ -1,46 +1,56 @@
 package com.kosbrother.realestate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.Choreographer.FrameCallback;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.kosbrother.realestate.fragment.CalculatorFragment;
 import com.kosbrother.realestate.fragment.DetailFragment;
 
-public class AboutUsActivity extends SherlockFragmentActivity
+public class AboutUsActivity extends SherlockActivity
 {
-	private static final int CONTENT_VIEW_ID = 100;
+
+	private TextView contactTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.calculator);
+		setContentView(R.layout.activity_about_us);
 
-		FrameLayout frame = new FrameLayout(this);
-		frame.setId(CONTENT_VIEW_ID);
-		setContentView(frame, new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
+		contactTextView = (TextView) findViewById(R.id.text_contact_us);
 
-		if (savedInstanceState == null)
+		contactTextView.setOnClickListener(new OnClickListener()
 		{
-			Fragment newFragment = new CalculatorFragment();
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			ft.add(CONTENT_VIEW_ID, newFragment).commit();
-		}
-		
+
+			@Override
+			public void onClick(View v)
+			{
+				final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+	            emailIntent.setType("plain/text");
+	            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "kosbrotherschool@gmail.com" });
+	            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "聯絡我們 from 實價登錄");
+	            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+	            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+			}
+		});
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
 	}
 
 	@Override
@@ -48,14 +58,13 @@ public class AboutUsActivity extends SherlockFragmentActivity
 	{
 		switch (item.getItemId())
 		{
-		   case android.R.id.home:
-	            finish();             
-	            return true;    
+		case android.R.id.home:
+			finish();
+			return true;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	
 }
