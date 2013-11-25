@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="通知"
+        android:textSize="@dimen/dialog_text_size" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="#000000" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="物件通知"
+                android:textSize="@dimen/dialog_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="熱門不動產物件通知,會出現於手機上方的狀態列"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/dialog_small_text_size" />
+        </LinearLayout>
+
+        <CheckBox android:id="@+id/checkbox_estate_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="其他"
+        android:textSize="@dimen/dialog_text_size" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="#000000" >
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_contact_us"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/setting_text_selector"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="使用介紹"
+        android:textSize="@dimen/dialog_text_size" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_gray" >
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_contact_us"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/setting_text_selector"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="APP評價"
+        android:textSize="@dimen/dialog_text_size" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_gray" >
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_contact_us"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/setting_text_selector"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="意見回餽"
+        android:textSize="@dimen/dialog_text_size" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_gray" >
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_contact_us"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/setting_text_selector"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:text="分享此APP"
+        android:textSize="@dimen/dialog_text_size" />
+
+</LinearLayout>

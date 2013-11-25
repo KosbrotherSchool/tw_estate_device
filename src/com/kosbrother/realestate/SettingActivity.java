@@ -1,46 +1,49 @@
 package com.kosbrother.realestate;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.view.Choreographer.FrameCallback;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
+import android.widget.CheckBox;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.kosbrother.realestate.fragment.CalculatorFragment;
-import com.kosbrother.realestate.fragment.DetailFragment;
+import com.kosbrother.realestate.api.Setting;
 
-public class SettingActivity extends SherlockFragmentActivity
+public class SettingActivity extends SherlockActivity
 {
-	private static final int CONTENT_VIEW_ID = 100;
+
+	private CheckBox checkBox_estate_notifyBox;
+	private int isEstateNotify;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.calculator);
+		setContentView(R.layout.activity_setting);
+		isEstateNotify = Setting.getSetting(Setting.estates_items_notify,
+				SettingActivity.this);
 
-		FrameLayout frame = new FrameLayout(this);
-		frame.setId(CONTENT_VIEW_ID);
-		setContentView(frame, new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
+		setViews();
 
-		if (savedInstanceState == null)
-		{
-			Fragment newFragment = new CalculatorFragment();
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			ft.add(CONTENT_VIEW_ID, newFragment).commit();
-		}
-		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
+	}
+
+	private void setViews()
+	{
+		checkBox_estate_notifyBox = (CheckBox) findViewById(R.id.checkbox_estate_notify);
+		setCheckBoxState(checkBox_estate_notifyBox, isEstateNotify);
+	}
+
+	private void setCheckBoxState(CheckBox checkBox, int isCheck)
+	{
+		if (isCheck == 1)
+		{
+			checkBox.setChecked(true);
+		} else
+		{
+			checkBox.setChecked(false);
+		}
+
 	}
 
 	@Override
@@ -48,14 +51,33 @@ public class SettingActivity extends SherlockFragmentActivity
 	{
 		switch (item.getItemId())
 		{
-		   case android.R.id.home:
-	            finish();             
-	            return true;    
+		case android.R.id.home:
+			finish();
+			return true;
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		saveCheckBoxSetting(Setting.estates_items_notify,
+				checkBox_estate_notifyBox);
+	}
+
+	private void saveCheckBoxSetting(String key, CheckBox checkBox)
+	{
+		if (checkBox.isChecked())
+		{
+			Setting.saveSetting(key, 1, SettingActivity.this);
+		} else
+		{
+			Setting.saveSetting(key, 0, SettingActivity.this);
+		}
+
+	}
+
 }
