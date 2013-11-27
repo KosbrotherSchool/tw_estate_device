@@ -55,6 +55,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -62,11 +64,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kosbrother.realestate.api.EstateApi;
 import com.kosbrother.realestate.api.InfoParserApi;
+import com.kosbrother.realestate.api.Setting;
+import com.kosbrother.realestate.fragment.TouchableWrapper.UpdateMapActionDown;
+import com.kosbrother.realestate.fragment.TouchableWrapper.UpdateMapAfterUserInterection;
 import com.kosbrother.realestate.fragment.TransparentSupportMapFragment;
 
-public class MainActivity extends SherlockFragmentActivity implements
-		LocationListener, GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener
+public class MainActivity extends SherlockFragmentActivity implements LocationListener,
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener, UpdateMapAfterUserInterection, UpdateMapActionDown
 {
 
 	// private ActionBarHelper mActionBar;
@@ -88,7 +93,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	// Google Map
 	private GoogleMap googleMap;
-	static final LatLng NKUT = new LatLng(23.979548, 120.696745);
+	// static final LatLng NKUT = new LatLng(23.979548, 120.696745);
 
 	private LatLng currentLatLng;
 
@@ -98,6 +103,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private ImageButton btnFilterButton;
 	private int currentMapTypePosition = 0;
 	private LinearLayout leftDrawer;
+
+	private TransparentSupportMapFragment mMapFragment;
+	private boolean isRunAsync = true;
+
+	// private boolean mMapIsTouched = false;
+
+	// Marker lastOpenned = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -113,6 +125,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		btnLayerButton = (ImageButton) findViewById(R.id.image_btn_layers);
 		btnFilterButton = (ImageButton) findViewById(R.id.image_btn_filter);
 		leftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
+		mMapFragment = (TransparentSupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.map);
 
 		btnFocusButton.setOnClickListener(new OnClickListener()
 		{
@@ -123,10 +137,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 				// Toast.makeText(MainActivity.this, "focus",
 				// Toast.LENGTH_SHORT)
 				// .show();
-				CameraPosition cameraPosition = new CameraPosition.Builder()
-						.target(currentLatLng).zoom(14).build();
-				googleMap.animateCamera(CameraUpdateFactory
-						.newCameraPosition(cameraPosition));
+				CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng)
+						.zoom(14).build();
+				googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 			}
 		});
 
@@ -137,16 +150,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 			{
 
 				// TODO Auto-generated method stub
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						MainActivity.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 				// Set the dialog title
 				builder.setTitle("順序排列").setSingleChoiceItems(R.array.map_type,
-						currentMapTypePosition,
-						new DialogInterface.OnClickListener()
+						currentMapTypePosition, new DialogInterface.OnClickListener()
 						{
 							@Override
-							public void onClick(DialogInterface dialog,
-									int position)
+							public void onClick(DialogInterface dialog, int position)
 							{
 								setMapTypeByPosition(position);
 								currentMapTypePosition = position;
@@ -158,16 +168,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 								switch (position)
 								{
 								case 0:
-									googleMap
-											.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+									googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 									break;
 								case 1:
-									googleMap
-											.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+									googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 									break;
 								case 2:
-									googleMap
-											.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+									googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 									break;
 								default:
 									break;
@@ -195,16 +202,14 @@ public class MainActivity extends SherlockFragmentActivity implements
 		});
 
 		// mDrawerLayout.setDrawerListener(new DemoDrawerListener());
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close)
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+				R.string.drawer_open, R.string.drawer_close)
 		{
 			public void onDrawerClosed(View view)
 			{
@@ -243,8 +248,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		View vDialog = inflater.inflate(R.layout.filterdialog, null);
 		final LinearLayout layoutMore = (LinearLayout) vDialog
 				.findViewById(R.id.layout_more_filter);
-		LinearLayout layoutMoreBtn = (LinearLayout) vDialog
-				.findViewById(R.id.layout_more_btn);
+		LinearLayout layoutMoreBtn = (LinearLayout) vDialog.findViewById(R.id.layout_more_btn);
 		layoutMoreBtn.setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -307,8 +311,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		mDrawerListView.setAdapter(mDrawerAdapter);
 		mDrawerListView.setOnItemClickListener((new OnItemClickListener()
 		{
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id)
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 			{
 				if (!items.get(position).isSection())
 				{
@@ -326,8 +329,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 						break;
 					case 2:
 						// favorite activity
-						Intent intent0 = new Intent(MainActivity.this,
-								FavoriteActivity.class);
+						Intent intent0 = new Intent(MainActivity.this, FavoriteActivity.class);
 						startActivity(intent0);
 						break;
 					case 3:
@@ -339,20 +341,17 @@ public class MainActivity extends SherlockFragmentActivity implements
 						// Toast.makeText(MainActivity.this, "pos=" + position,
 						// Toast.LENGTH_SHORT).show();
 
-						Intent intent = new Intent(MainActivity.this,
-								CalculatorActivity.class);
+						Intent intent = new Intent(MainActivity.this, CalculatorActivity.class);
 						startActivity(intent);
 						break;
 					case 7:
 						// setting activity
-						Intent intent1 = new Intent(MainActivity.this,
-								SettingActivity.class);
+						Intent intent1 = new Intent(MainActivity.this, SettingActivity.class);
 						startActivity(intent1);
 						break;
 					case 8:
 						// about us
-						Intent intent2 = new Intent(MainActivity.this,
-								AboutUsActivity.class);
+						Intent intent2 = new Intent(MainActivity.this, AboutUsActivity.class);
 						startActivity(intent2);
 						break;
 					default:
@@ -396,61 +395,46 @@ public class MainActivity extends SherlockFragmentActivity implements
 					View v = inflater.inflate(R.layout.item_window_info, null);
 					int position = Integer.parseInt(marker.getTitle());
 
-					TextView textAddress = (TextView) v
-							.findViewById(R.id.text_info_address);
+					TextView textAddress = (TextView) v.findViewById(R.id.text_info_address);
 
-					TextView textHouseAge = (TextView) v
-							.findViewById(R.id.text_info_house_age);
-					TextView textBuyDate = (TextView) v
-							.findViewById(R.id.text_info_buy_date);
+					TextView textHouseAge = (TextView) v.findViewById(R.id.text_info_house_age);
+					TextView textBuyDate = (TextView) v.findViewById(R.id.text_info_buy_date);
 
-					TextView textGroundArea = (TextView) v
-							.findViewById(R.id.text_info_ground_area);
-					TextView textEstateType = (TextView) v
-							.findViewById(R.id.text_info_estate_type);
+					TextView textGroundArea = (TextView) v.findViewById(R.id.text_info_ground_area);
+					TextView textEstateType = (TextView) v.findViewById(R.id.text_info_estate_type);
 
-					TextView textTotalPrice = (TextView) v
-							.findViewById(R.id.text_info_total_price);
+					TextView textTotalPrice = (TextView) v.findViewById(R.id.text_info_total_price);
 					TextView textBuildingType = (TextView) v
 							.findViewById(R.id.text_info_buiding_type);
 
 					TextView textBuyPerSquareFeet = (TextView) v
 							.findViewById(R.id.text_info_buy_persquare_feet);
-					TextView textBuyLayer = (TextView) v
-							.findViewById(R.id.text_info_buy_layer);
+					TextView textBuyLayer = (TextView) v.findViewById(R.id.text_info_buy_layer);
 
-					TextView textRooms = (TextView) v
-							.findViewById(R.id.text_info_rooms);
-					TextView textIsGuarding = (TextView) v
-							.findViewById(R.id.text_info_is_guarding);
+					TextView textRooms = (TextView) v.findViewById(R.id.text_info_rooms);
+					TextView textIsGuarding = (TextView) v.findViewById(R.id.text_info_is_guarding);
 
 					textAddress.setText(Datas.mEstates.get(position).estate_address);
 
-					textHouseAge.setText(InfoParserApi
-							.parseHouseAge(Datas.mEstates.get(position).date_built));
-					textBuyDate.setText(InfoParserApi
-							.parseBuyDate(Datas.mEstates.get(position).date_buy));
+					textHouseAge.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(position).date_built));
+					textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(position).date_buy));
 
-					textGroundArea.setText(InfoParserApi
-							.parseBuildingExchangeArea(Datas.mEstates
-									.get(position).building_exchange_area));
-					textEstateType.setText(InfoParserApi
-							.parseEstateType(Datas.mEstates.get(position).estate_type));
+					textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
+							.get(position).building_exchange_area));
+					textEstateType.setText(InfoParserApi.parseEstateType(Datas.mEstates
+							.get(position).estate_type));
 
-					textTotalPrice.setText(InfoParserApi
-							.parseTotalBuyMoney(Datas.mEstates.get(position).buy_total_price));
-					textBuildingType.setText(InfoParserApi
-							.parseEstateType(Datas.mEstates.get(position).building_type));
+					textTotalPrice.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates
+							.get(position).buy_total_price));
+					textBuildingType.setText(InfoParserApi.parseEstateType(Datas.mEstates
+							.get(position).building_type));
 
 					textBuyPerSquareFeet.setText(InfoParserApi
-							.parsePerSquareFeetMoney(Datas.mEstates
-									.get(position).buy_per_square_feet));
-					textBuyLayer.setText(Datas.mEstates.get(position).buy_layer
-							+ "/"
+							.parsePerSquareFeetMoney(Datas.mEstates.get(position).buy_per_square_feet));
+					textBuyLayer.setText(Datas.mEstates.get(position).buy_layer + "/"
 							+ Integer.toString(Datas.mEstates.get(position).building_total_layer));
 
-					textRooms.setText(Integer.toString(Datas.mEstates
-							.get(position).building_room)
+					textRooms.setText(Integer.toString(Datas.mEstates.get(position).building_room)
 							+ "房"
 							+ Integer.toString(Datas.mEstates.get(position).building_sitting_room)
 							+ "廳"
@@ -469,19 +453,10 @@ public class MainActivity extends SherlockFragmentActivity implements
 				}
 			});
 
-			// Location currentLoc = googleMap.getMyLocation();
-			// LatLng currentLatLng = new LatLng (currentLoc.getLatitude(),
-			// currentLoc.getLongitude());
-			// CameraPosition cameraPosition = new
-			// CameraPosition.Builder().target(currentLatLng).zoom(12).build();
-			// googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-			// check if map is created successfully or not
 			if (googleMap == null)
 			{
-				Toast.makeText(getApplicationContext(),
-						"Sorry! unable to create maps", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getApplicationContext(), "Sorry! unable to create maps",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -498,60 +473,54 @@ public class MainActivity extends SherlockFragmentActivity implements
 	{
 		super.onCreateOptionsMenu(menu);
 
-		itemSearch = menu
-				.add(0, ID_SEARCH, 0,
-						getResources().getString(R.string.menu_search))
+		itemSearch = menu.add(0, ID_SEARCH, 0, getResources().getString(R.string.menu_search))
 				.setIcon(R.drawable.icon_search)
-				.setOnActionExpandListener(
-						new MenuItem.OnActionExpandListener()
+				.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
+				{
+					private EditText search;
+
+					@Override
+					public boolean onMenuItemActionExpand(MenuItem item)
+					{
+						search = (EditText) item.getActionView();
+						search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+						search.setInputType(InputType.TYPE_CLASS_TEXT);
+						search.requestFocus();
+						search.setOnEditorActionListener(new TextView.OnEditorActionListener()
 						{
-							private EditText search;
-
 							@Override
-							public boolean onMenuItemActionExpand(MenuItem item)
+							public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
 							{
-								search = (EditText) item.getActionView();
-								search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-								search.setInputType(InputType.TYPE_CLASS_TEXT);
-								search.requestFocus();
-								search.setOnEditorActionListener(new TextView.OnEditorActionListener()
+								if (actionId == EditorInfo.IME_ACTION_SEARCH
+										|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
 								{
-									@Override
-									public boolean onEditorAction(TextView v,
-											int actionId, KeyEvent event)
-									{
-										if (actionId == EditorInfo.IME_ACTION_SEARCH
-												|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-										{
-											// Bundle bundle = new Bundle();
-											// bundle.putString("SearchKeyword",
-											// v.getText().toString());
-											// Intent intent = new Intent();
-											// intent.setClass(MainActivity.this,
-											// SearchActivity.class);
-											// intent.putExtras(bundle);
-											// startActivity(intent);
-											// itemSearch.collapseActionView();
-											return true;
-										}
-										return false;
-									}
-								});
-								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								imm.showSoftInput(null,
-										InputMethodManager.SHOW_IMPLICIT);
-								return true;
+									// Bundle bundle = new Bundle();
+									// bundle.putString("SearchKeyword",
+									// v.getText().toString());
+									// Intent intent = new Intent();
+									// intent.setClass(MainActivity.this,
+									// SearchActivity.class);
+									// intent.putExtras(bundle);
+									// startActivity(intent);
+									// itemSearch.collapseActionView();
+									return true;
+								}
+								return false;
 							}
+						});
+						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.showSoftInput(null, InputMethodManager.SHOW_IMPLICIT);
+						return true;
+					}
 
-							@Override
-							public boolean onMenuItemActionCollapse(
-									MenuItem item)
-							{
-								// TODO Auto-generated method stub
-								search.setText("");
-								return true;
-							}
-						}).setActionView(R.layout.collapsible_edittext);
+					@Override
+					public boolean onMenuItemActionCollapse(MenuItem item)
+					{
+						// TODO Auto-generated method stub
+						search.setText("");
+						return true;
+					}
+				}).setActionView(R.layout.collapsible_edittext);
 		itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
 				| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
@@ -561,8 +530,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(
-			com.actionbarsherlock.view.MenuItem item)
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item)
 	{
 		if (mDrawerToggle.onOptionsItemSelected(getMenuItem(item)))
 		{
@@ -572,12 +540,10 @@ public class MainActivity extends SherlockFragmentActivity implements
 			switch (item.getItemId())
 			{
 			case ID_SEARCH:
-				Toast.makeText(MainActivity.this, "search", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(MainActivity.this, "search", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.menu_list:
-				Toast.makeText(MainActivity.this, "list", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(MainActivity.this, "list", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, ListActivity.class);
 				// intent.putExtras(bundle);
@@ -737,8 +703,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			}
 
 			@Override
-			public android.view.MenuItem setActionProvider(
-					ActionProvider actionProvider)
+			public android.view.MenuItem setActionProvider(ActionProvider actionProvider)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -815,8 +780,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			}
 
 			@Override
-			public android.view.MenuItem setOnActionExpandListener(
-					OnActionExpandListener listener)
+			public android.view.MenuItem setOnActionExpandListener(OnActionExpandListener listener)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -831,8 +795,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			}
 
 			@Override
-			public android.view.MenuItem setShortcut(char numericChar,
-					char alphaChar)
+			public android.view.MenuItem setShortcut(char numericChar, char alphaChar)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -904,18 +867,143 @@ public class MainActivity extends SherlockFragmentActivity implements
 						currentLocation.getLongitude());
 			} else
 			{
-				currentLatLng = new LatLng(25.0478, 121.5172);
+				LatLng newLatLng = Setting.getLastCenter(MainActivity.this);
+				if (newLatLng.latitude != 0.0)
+				{
+					currentLatLng = newLatLng;
+				} else
+				{
+					currentLatLng = new LatLng(25.0478, 121.5172);
+				}
 			}
 
-			CameraPosition cameraPosition = new CameraPosition.Builder()
-					.target(currentLatLng).zoom(14).build();
-			googleMap.animateCamera(CameraUpdateFactory
-					.newCameraPosition(cameraPosition));
+			// CameraPosition cameraPosition = new CameraPosition.Builder()
+			// .target(currentLatLng).zoom(14).build();
+			// googleMap.animateCamera(CameraUpdateFactory
+			// .newCameraPosition(cameraPosition));
 
-			new GetEstatesTask().execute();
+			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+					currentLatLng.latitude, currentLatLng.longitude), 16.0f));
+
+			googleMap.setOnMarkerClickListener(new OnMarkerClickListener()
+			{
+
+				@Override
+				public boolean onMarkerClick(Marker marker)
+				{
+					// TODO Auto-generated method stub
+					marker.showInfoWindow();
+					isRunAsync = false;
+					return false;
+				}
+			});
+
+			// googleMap.setOnMarkerClickListener(new OnMarkerClickListener()
+			// {
+			// public boolean onMarkerClick(Marker marker)
+			// {
+			// // Check if there is an open info window
+			// if (lastOpenned != null)
+			// {
+			// // Close the info window
+			// lastOpenned.hideInfoWindow();
+			//
+			// // Is the marker the same marker that was already open
+			// if (lastOpenned.equals(marker))
+			// {
+			// // Nullify the lastOpenned object
+			// lastOpenned = null;
+			// // Return so that the info window isn't openned
+			// // again
+			// return true;
+			// }
+			// }
+			//
+			// // Open the info window for the marker
+			// marker.showInfoWindow();
+			// // Re-assign the last openned such that we can close it
+			// // later
+			// lastOpenned = marker;
+			//
+			// // Event was handled by our code do not launch default
+			// // behaviour.
+			// return true;
+			// }
+			// });
+
+			googleMap.setOnCameraChangeListener(new OnCameraChangeListener()
+			{
+
+				@Override
+				public void onCameraChange(CameraPosition position)
+				{
+					// if(mMapFragment.isMpaTouched()){
+					// isRunAsync = true;
+					// }
+					//
+					// if (!mMapFragment.isMpaTouched() && isRunAsync)
+					// {
+					if (isRunAsync)
+					{
+						Toast.makeText(MainActivity.this, "Map is Not Touched", Toast.LENGTH_SHORT)
+								.show();
+						// TODO Auto-generated method stub
+						double lat = position.target.latitude;
+						double lng = position.target.longitude;
+
+						LatLng bottomLeft = googleMap.getProjection().getVisibleRegion().nearLeft;
+						LatLng bottomRight = googleMap.getProjection().getVisibleRegion().nearRight;
+						LatLng topLeft = googleMap.getProjection().getVisibleRegion().farLeft;
+						LatLng topRight = googleMap.getProjection().getVisibleRegion().farRight;
+
+						LatLng spot1 = new LatLng(topLeft.latitude * 3 / 4 + lat * 1 / 4,
+								topLeft.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng topCenter = new LatLng(topLeft.latitude * 1 / 2 + topRight.latitude
+								* 1 / 2, topLeft.longitude * 1 / 2 + topRight.longitude * 1 / 2);
+						LatLng spot2 = new LatLng(topCenter.latitude * 3 / 4 + lat * 1 / 4,
+								topCenter.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng spot3 = new LatLng(topRight.latitude * 3 / 4 + lat * 1 / 4,
+								topRight.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng leftCenter = new LatLng(topLeft.latitude * 1 / 2
+								+ bottomLeft.latitude * 1 / 2, topLeft.longitude * 1 / 2
+								+ bottomLeft.longitude * 1 / 2);
+						LatLng spot4 = new LatLng(leftCenter.latitude * 3 / 4 + lat * 1 / 4,
+								leftCenter.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng RightCenter = new LatLng(topRight.latitude * 1 / 2
+								+ bottomRight.latitude * 1 / 2, topRight.longitude * 1 / 2
+								+ bottomRight.longitude * 1 / 2);
+						LatLng spot5 = new LatLng(RightCenter.latitude * 3 / 4 + lat * 1 / 4,
+								RightCenter.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng spot6 = new LatLng(bottomLeft.latitude * 3 / 4 + lat * 1 / 4,
+								bottomLeft.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng BottomCenter = new LatLng(bottomLeft.latitude * 1 / 2
+								+ bottomRight.latitude * 1 / 2, bottomLeft.longitude * 1 / 2
+								+ bottomRight.longitude * 1 / 2);
+						LatLng spot7 = new LatLng(BottomCenter.latitude * 3 / 4 + lat * 1 / 4,
+								BottomCenter.longitude * 3 / 4 + lng * 1 / 4);
+						LatLng spot8 = new LatLng(bottomRight.latitude * 3 / 4 + lat * 1 / 4,
+								bottomRight.longitude * 3 / 4 + lng * 1 / 4);
+
+						LatLng[] latLngs = { position.target, spot1, spot2, spot3, spot4, spot5,
+								spot6, spot7, spot8 };
+
+						new GetEstatesTask().execute(latLngs);
+					}
+				}
+			});
+
+			// new GetEstatesTask().execute();
 			// Display the current location in the UI
 			// mLatLng.setText(LocationUtils.getLatLng(this, currentLocation));
 		}
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		LatLng centerLatLng = googleMap.getCameraPosition().target;
+		Setting.saveLastCenter(centerLatLng.latitude, centerLatLng.longitude, MainActivity.this);
 	}
 
 	/**
@@ -927,15 +1015,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 	{
 
 		// Check that Google Play services is available
-		int resultCode = GooglePlayServicesUtil
-				.isGooglePlayServicesAvailable(this);
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
 		// If Google Play services is available
 		if (ConnectionResult.SUCCESS == resultCode)
 		{
 			// In debug mode, log the status
-			Log.d(LocationUtils.APPTAG,
-					getString(R.string.play_services_available));
+			Log.d(LocationUtils.APPTAG, getString(R.string.play_services_available));
 
 			// Continue
 			return true;
@@ -943,14 +1029,12 @@ public class MainActivity extends SherlockFragmentActivity implements
 		} else
 		{
 			// Display an error dialog
-			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode,
-					this, 0);
+			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 0);
 			if (dialog != null)
 			{
 				ErrorDialogFragment errorFragment = new ErrorDialogFragment();
 				errorFragment.setDialog(dialog);
-				errorFragment.show(getSupportFragmentManager(),
-						LocationUtils.APPTAG);
+				errorFragment.show(getSupportFragmentManager(), LocationUtils.APPTAG);
 			}
 			return false;
 		}
@@ -1060,8 +1144,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 	{
 
 		// Get the error dialog from Google Play services
-		Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode,
-				this, LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+		Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(errorCode, this,
+				LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
 
 		// If Google Play services can provide an error dialog
 		if (errorDialog != null)
@@ -1074,8 +1158,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			errorFragment.setDialog(errorDialog);
 
 			// Show the error dialog in the DialogFragment
-			errorFragment.show(getSupportFragmentManager(),
-					LocationUtils.APPTAG);
+			errorFragment.show(getSupportFragmentManager(), LocationUtils.APPTAG);
 		}
 	}
 
@@ -1136,7 +1219,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		// mConnectionState.setText(R.string.location_updates_stopped);
 	}
 
-	protected class GetEstatesTask extends AsyncTask
+	protected class GetEstatesTask extends AsyncTask<LatLng, Void, Void>
 	{
 
 		@Override
@@ -1147,20 +1230,38 @@ public class MainActivity extends SherlockFragmentActivity implements
 		}
 
 		@Override
-		protected Object doInBackground(Object... params)
+		protected Void doInBackground(LatLng... latLngs)
 		{
 			// TODO Auto-generated method stub
-			Datas.mEstates = EstateApi.getAroundAll(currentLatLng.latitude,
-					currentLatLng.longitude);
+			try
+			{
+				Datas.mEstates.clear();
+			} catch (Exception e)
+			{
+				// TODO: handle exception
+			}
+
+			// ArrayList<RealEstate> newEstates = new ArrayList<RealEstate>();
+			// for (int i=0; i<latLngs.length; i++){
+			// newEstates = EstateApi.getAroundAll(latLngs[i].latitude,
+			// latLngs[i].longitude);
+			// // Datas.mEstates.addAll(newEstates);
+			// for(RealEstate item: newEstates){
+			// Datas.mEstates.add(item);
+			// }
+			// }
+
+			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs);
 
 			return null;
 		}
 
 		@Override
-		protected void onPostExecute(Object result)
+		protected void onPostExecute(Void result)
 		{
+			googleMap.clear();
 			// super.onPostExecute(result);
-			if (Datas.mEstates != null)
+			if (Datas.mEstates != null && Datas.mEstates.size() != 0)
 			{
 				for (int i = 0; i < Datas.mEstates.size(); i++)
 				{
@@ -1170,17 +1271,14 @@ public class MainActivity extends SherlockFragmentActivity implements
 					layout.setLayoutParams(new LinearLayout.LayoutParams(
 							LinearLayout.LayoutParams.WRAP_CONTENT,
 							LinearLayout.LayoutParams.WRAP_CONTENT));
-					ImageView markerView = (ImageView) layout
-							.findViewById(R.id.image_marker);
-					TextView markerText = (TextView) layout
-							.findViewById(R.id.text_marker_price);
+					ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+					TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
 
 					// for later marker info window use
-					MarkerOptions marker = new MarkerOptions().position(
-							newLatLng).title(Integer.toString(i));
-					markerText.setText(InfoParserApi
-							.parsePerSquareFeetMoney_maker(Datas.mEstates
-									.get(i).buy_per_square_feet));
+					MarkerOptions marker = new MarkerOptions().position(newLatLng).title(
+							Integer.toString(i));
+					markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+							.get(i).buy_per_square_feet));
 
 					if (Datas.mEstates.get(i).estate_group == 1)
 					{
@@ -1210,8 +1308,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 				}
 			} else
 			{
-				Toast.makeText(MainActivity.this, "No Data!!",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, "No Data!!", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -1221,19 +1318,33 @@ public class MainActivity extends SherlockFragmentActivity implements
 		if (v.getMeasuredHeight() <= 0)
 		{
 			v.measure(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(),
-					v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+			Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(),
+					Bitmap.Config.ARGB_8888);
 			Canvas c = new Canvas(b);
 			v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
 			v.draw(c);
 			return b;
 		}
 
-		Bitmap b = Bitmap.createBitmap(v.getLayoutParams().width,
-				v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+		Bitmap b = Bitmap.createBitmap(v.getLayoutParams().width, v.getLayoutParams().height,
+				Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(b);
 		v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
 		v.draw(c);
 		return b;
+	}
+
+	@Override
+	public void onUpdateMapAfterUserInterection()
+	{
+		// TODO Auto-generated method stub
+		isRunAsync = true;
+	}
+
+	@Override
+	public void onUpdateMapActionDown()
+	{
+		// TODO Auto-generated method stub
+		isRunAsync = false;
 	}
 }
