@@ -40,7 +40,9 @@ public class EstateApi
 		}
 	}
 
-	public static ArrayList<RealEstate> getAroundAllByAreas(LatLng[] latLngs)
+	public static ArrayList<RealEstate> getAroundAllByAreas(LatLng[] latLngs, boolean isShowSale,
+			boolean isShowRent, boolean isShowPreSale, int salePerSquareMin, int salePerSquareMax,
+			int saleTotalMin, int saleTotalMax, double saleAreaMin, double saleAreaMax)
 	{
 		String message = getMessageFromServer("GET", "/api/v1/real_estate/around_all_by_areas?"
 				+ "center_x="
@@ -76,7 +78,24 @@ public class EstateApi
 				+ "&spot7_y="
 				+ latLngs[7].longitude
 				+ "&spot8_x="
-				+ latLngs[8].latitude + "&spot8_y=" + latLngs[8].longitude, null, null);
+				+ latLngs[8].latitude
+				+ "&spot8_y="
+				+ latLngs[8].longitude
+				+ "&isShowSale="
+				+ isShowSale
+				+ "&isShowRent="
+				+ isShowRent
+				+ "&isShowPreSale="
+				+ isShowPreSale
+				+ "&salePerSquareMin="
+				+ salePerSquareMin
+				+ "&salePerSquareMax="
+				+ salePerSquareMax
+				+ "&saleTotalMin="
+				+ saleTotalMin * 3.3058
+				+ "&saleTotalMax="
+				+ saleTotalMax  * 3.3058
+				+ "&saleAreaMin=" + saleAreaMin + "&saleAreaMax=" + saleAreaMax, null, null);
 		ArrayList<RealEstate> realEstates = new ArrayList<RealEstate>();
 		if (message == null)
 		{
@@ -362,29 +381,6 @@ public class EstateApi
 
 				double x_lat = jArray.getJSONObject(i).getDouble("x_lat");
 				double y_long = jArray.getJSONObject(i).getDouble("y_long");
-
-				// int rank = 0;
-				// if (!jArray.getJSONObject(i).isNull("rank"))
-				// rank = jArray.getJSONObject(i).getInt("rank");
-
-				// RealEstate(int id, int estate_group, String estate_town,
-				// String estate_type, String estate_address,
-				// double ground_exchange_area, double ground_rent_area, String
-				// ground_usage,
-				// String date_buy, String content_buy, String date_rent, String
-				// content_rent,
-				// String rent_layer, String buy_layer, int
-				// building_total_layer,
-				// String building_type, String main_purpose, String
-				// main_material, String date_built,
-				// double building_exchange_area, int building_room, int
-				// building_sitting_room, int building_rest_room,
-				// String is_guarding, String is_having_furniture,
-				// int buy_total_price, double buy_per_square_feet, int
-				// rent_total_price, double rent_per_square_feet,
-				// String parking_type, double parking_exchange_area, int
-				// parking_total_price,
-				// double x_lat, double y_long)
 
 				RealEstate newEstate = new RealEstate(id, estate_group, estate_town, estate_type,
 						estate_address, ground_exchange_area, ground_rent_area, ground_usage,

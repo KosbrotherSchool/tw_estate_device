@@ -170,7 +170,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="單價(萬坪)"
+                        android:text="單價(萬/坪)"
                         android:textSize="@dimen/dialog_text_size" />
 
                     <LinearLayout
@@ -188,6 +188,7 @@
                         android:orientation="horizontal" >
 
                         <EditText
+                            android:id="@+id/sale_per_square_min"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -201,6 +202,7 @@
                             android:textSize="@dimen/dialog_small_text_size" />
 
                         <EditText
+                            android:id="@+id/sale_per_square_max"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -236,6 +238,7 @@
                         android:orientation="horizontal" >
 
                         <EditText
+                            android:id="@+id/sale_total_min"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -249,6 +252,7 @@
                             android:textSize="@dimen/dialog_small_text_size" />
 
                         <EditText
+                            android:id="@+id/sale_total_max"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -284,6 +288,7 @@
                         android:orientation="horizontal" >
 
                         <EditText
+                            android:id="@+id/sale_area_min"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -297,6 +302,7 @@
                             android:textSize="@dimen/dialog_small_text_size" />
 
                         <EditText
+                            android:id="@+id/sale_area_max"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

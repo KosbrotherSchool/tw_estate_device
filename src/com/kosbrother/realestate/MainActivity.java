@@ -1,7 +1,6 @@
 package com.kosbrother.realestate;
 
 import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -32,6 +31,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -71,7 +73,8 @@ import com.kosbrother.realestate.fragment.TransparentSupportMapFragment;
 
 public class MainActivity extends SherlockFragmentActivity implements LocationListener,
 		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener, UpdateMapAfterUserInterection, UpdateMapActionDown
+		GooglePlayServicesClient.OnConnectionFailedListener, UpdateMapAfterUserInterection,
+		UpdateMapActionDown
 {
 
 	// private ActionBarHelper mActionBar;
@@ -104,12 +107,22 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	private int currentMapTypePosition = 0;
 	private LinearLayout leftDrawer;
 
-	private TransparentSupportMapFragment mMapFragment;
+	// private TransparentSupportMapFragment mMapFragment;
 	private boolean isRunAsync = true;
 
-	// private boolean mMapIsTouched = false;
-
-	// Marker lastOpenned = null;
+	// filter function params
+	private boolean isSaledMarkerShow = true;
+	private boolean isRentMarkerShow = true;
+	private boolean isPreSaleMarkerShow = true;
+	private int salePerSquareMin = 0;
+	// if is 0, means no need to add query string
+	private int salePerSquareMax = 0; 
+	private int saleTotalMin = 0;
+	// if is 0, means no need to add query string
+	private int saleTotalMax = 0; 
+	private double saleAreaMin = 0;
+	// if is 0, means no need to add query string
+	private double saleAreaMax = 0; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -125,8 +138,9 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		btnLayerButton = (ImageButton) findViewById(R.id.image_btn_layers);
 		btnFilterButton = (ImageButton) findViewById(R.id.image_btn_filter);
 		leftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
-		mMapFragment = (TransparentSupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map);
+		// mMapFragment = (TransparentSupportMapFragment)
+		// getSupportFragmentManager()
+		// .findFragmentById(R.id.map);
 
 		btnFocusButton.setOnClickListener(new OnClickListener()
 		{
@@ -192,12 +206,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
-				// Toast.makeText(MainActivity.this, "filter",
-				// Toast.LENGTH_SHORT)
-				// .show();
 				showFilterDialog();
-
 			}
 		});
 
@@ -246,6 +255,110 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	protected void showFilterDialog()
 	{
 		View vDialog = inflater.inflate(R.layout.filterdialog, null);
+		CheckBox saleCheckBox = (CheckBox) vDialog.findViewById(R.id.checkbox_sale);
+		CheckBox rentCheckBox = (CheckBox) vDialog.findViewById(R.id.checkbox_rent);
+		CheckBox preSaleBox = (CheckBox) vDialog.findViewById(R.id.checkbox_presale);
+		final EditText editSalePerSquareMin = (EditText) vDialog
+				.findViewById(R.id.sale_per_square_min);
+		final EditText editSalePerSquareMax = (EditText) vDialog
+				.findViewById(R.id.sale_per_square_max);
+		final EditText editSaleTotalMin = (EditText) vDialog.findViewById(R.id.sale_total_min);
+		final EditText editSaleTotalMax = (EditText) vDialog.findViewById(R.id.sale_total_max);
+		final EditText editSaleAreaMin = (EditText) vDialog.findViewById(R.id.sale_area_min);
+		final EditText editSaleAreaMax = (EditText) vDialog.findViewById(R.id.sale_area_max);
+		
+		if (salePerSquareMin != 0){
+			editSalePerSquareMin.setText(Integer.toString(salePerSquareMin));
+		}
+		if (salePerSquareMax != 0){
+			editSalePerSquareMax.setText(Integer.toString(salePerSquareMax));
+		}
+		if (saleTotalMin != 0){
+			editSaleTotalMin.setText(Integer.toString(saleTotalMin));
+		}
+		if (saleTotalMax != 0){
+			editSaleTotalMax.setText(Integer.toString(saleTotalMax));
+		}
+		if (saleAreaMin != 0.0){
+			editSaleAreaMin.setText(Double.toString(saleAreaMin));
+		}
+		if (saleAreaMax != 0.0){
+			editSaleAreaMax.setText(Double.toString(saleAreaMax));
+		}
+		
+		if (isSaledMarkerShow)
+		{
+			saleCheckBox.setChecked(true);
+		} else
+		{
+			saleCheckBox.setChecked(false);
+		}
+
+		if (isRentMarkerShow)
+		{
+			rentCheckBox.setChecked(true);
+		} else
+		{
+			rentCheckBox.setChecked(false);
+		}
+
+		if (isPreSaleMarkerShow)
+		{
+			preSaleBox.setChecked(true);
+		} else
+		{
+			preSaleBox.setChecked(false);
+		}
+		
+		saleCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if (isChecked)
+				{
+					isSaledMarkerShow = true;
+				} else
+				{
+					isSaledMarkerShow = false;
+				}
+			}
+		});
+
+		rentCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if (isChecked)
+				{
+					isRentMarkerShow = true;
+				} else
+				{
+					isRentMarkerShow = false;
+				}
+
+			}
+		});
+
+		preSaleBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if (isChecked)
+				{
+					isPreSaleMarkerShow = true;
+				} else
+				{
+					isPreSaleMarkerShow = false;
+				}
+			}
+		});
+
 		final LinearLayout layoutMore = (LinearLayout) vDialog
 				.findViewById(R.id.layout_more_filter);
 		LinearLayout layoutMoreBtn = (LinearLayout) vDialog.findViewById(R.id.layout_more_btn);
@@ -272,7 +385,49 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		{
 			public void onClick(DialogInterface dialog, int id)
 			{
-
+				try
+				{
+					salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText().toString());
+				} catch (Exception e)
+				{
+					salePerSquareMin = 0;
+				}
+				try
+				{
+					salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText().toString());
+				} catch (Exception e)
+				{
+					salePerSquareMax = 0;
+				}
+				try
+				{
+					saleTotalMin = Integer.parseInt(editSaleTotalMin.getText().toString());
+				} catch (Exception e)
+				{
+					saleTotalMin = 0;
+				}
+				try
+				{
+					saleTotalMax = Integer.parseInt(editSaleTotalMax.getText().toString());
+				} catch (Exception e)
+				{
+					saleTotalMax = 0;
+				}
+				try
+				{
+					saleAreaMin = Double.parseDouble(editSaleAreaMin.getText().toString());
+				} catch (Exception e)
+				{
+					saleAreaMin = 0;
+				}
+				try
+				{
+					saleAreaMax = Double.parseDouble(editSaleAreaMax.getText().toString());
+				} catch (Exception e)
+				{
+					saleAreaMax = 0;
+				}
+				Log.i("fffff", salePerSquareMin + " " + salePerSquareMax);
 			}
 		}).setNegativeButton("取消", new DialogInterface.OnClickListener()
 		{
@@ -540,10 +695,12 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			switch (item.getItemId())
 			{
 			case ID_SEARCH:
-				Toast.makeText(MainActivity.this, "search", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(MainActivity.this, "search",
+				// Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.menu_list:
-				Toast.makeText(MainActivity.this, "list", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(MainActivity.this, "list",
+				// Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, ListActivity.class);
 				// intent.putExtras(bundle);
@@ -945,8 +1102,9 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 					// {
 					if (isRunAsync)
 					{
-						Toast.makeText(MainActivity.this, "Map is Not Touched", Toast.LENGTH_SHORT)
-								.show();
+						// Toast.makeText(MainActivity.this,
+						// "Map is Not Touched", Toast.LENGTH_SHORT)
+						// .show();
 						// TODO Auto-generated method stub
 						double lat = position.target.latitude;
 						double lng = position.target.longitude;
@@ -1241,17 +1399,9 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 				// TODO: handle exception
 			}
 
-			// ArrayList<RealEstate> newEstates = new ArrayList<RealEstate>();
-			// for (int i=0; i<latLngs.length; i++){
-			// newEstates = EstateApi.getAroundAll(latLngs[i].latitude,
-			// latLngs[i].longitude);
-			// // Datas.mEstates.addAll(newEstates);
-			// for(RealEstate item: newEstates){
-			// Datas.mEstates.add(item);
-			// }
-			// }
-
-			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs);
+			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs, isSaledMarkerShow,
+					isRentMarkerShow, isPreSaleMarkerShow, salePerSquareMin, salePerSquareMax,
+					saleTotalMin, saleTotalMax, saleAreaMin, saleAreaMax);
 
 			return null;
 		}
@@ -1263,6 +1413,11 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			// super.onPostExecute(result);
 			if (Datas.mEstates != null && Datas.mEstates.size() != 0)
 			{
+
+				// Toast.makeText(MainActivity.this, "附近有 "+
+				// Integer.toString(Datas.mEstates.size()) +" 筆資料" ,
+				// Toast.LENGTH_SHORT).show();
+
 				for (int i = 0; i < Datas.mEstates.size(); i++)
 				{
 					LatLng newLatLng = new LatLng(Datas.mEstates.get(i).x_lat,
@@ -1284,13 +1439,13 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 					{
 						markerView.setImageResource(R.drawable.marker_red);
 						marker.snippet("estate");
-					} else if (Datas.mEstates.get(i).estate_group == 2)
+					} else if (Datas.mEstates.get(i).estate_group == 3)
 					{
 						markerView.setImageResource(R.drawable.marker_green);
 						marker.snippet("rent");
 						// googleMap.addMarker(new
 						// MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
-					} else if (Datas.mEstates.get(i).estate_group == 3)
+					} else if (Datas.mEstates.get(i).estate_group == 2)
 					{
 						markerView.setImageResource(R.drawable.marker_presale);
 						marker.snippet("pre_sale");
