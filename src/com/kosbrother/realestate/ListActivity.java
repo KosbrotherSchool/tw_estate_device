@@ -153,7 +153,7 @@ public class ListActivity extends SherlockFragmentActivity
 		itemSearch = menu
 				.add(0, ID_SEARCH, 0,
 						getResources().getString(R.string.menu_search))
-				.setIcon(R.drawable.icon_search)
+				.setIcon(R.drawable.icon_search_white)
 				.setOnActionExpandListener(
 						new MenuItem.OnActionExpandListener()
 						{

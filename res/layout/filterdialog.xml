@@ -33,7 +33,7 @@
                     <ImageView
                         android:layout_width="@dimen/dialog_tag_size"
                         android:layout_height="@dimen/dialog_tag_size"
-                        android:background="@drawable/marker_red" />
+                        android:background="@drawable/marker_sale" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -72,7 +72,7 @@
                     <ImageView
                         android:layout_width="@dimen/dialog_tag_size"
                         android:layout_height="@dimen/dialog_tag_size"
-                        android:background="@drawable/marker_green" />
+                        android:background="@drawable/marker_rent" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -111,7 +111,7 @@
                     <ImageView
                         android:layout_width="@dimen/dialog_tag_size"
                         android:layout_height="@dimen/dialog_tag_size"
-                        android:background="@drawable/marker_presale" />
+                        android:background="@drawable/marker_presell" />
 
                     <TextView
                         android:layout_width="0dp"

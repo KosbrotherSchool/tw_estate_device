@@ -54,7 +54,7 @@
 		        <ImageView android:id="@+id/image_estate"
 		            android:layout_width="25dp"
 		        	android:layout_height="25dp"
-		        	android:background="@drawable/marker_red"
+		        	android:background="@drawable/marker_sale"
 		        	android:layout_marginLeft="5dp"
 		            />
 		         <TextView 
@@ -67,7 +67,7 @@
 		         <ImageView android:id="@+id/image_estate"
 		            android:layout_width="25dp"
 		        	android:layout_height="25dp"
-		        	android:background="@drawable/marker_green"
+		        	android:background="@drawable/marker_rent"
 		        	android:layout_marginLeft="5dp"
 		            />
 		         <TextView 
@@ -80,7 +80,7 @@
 		          <ImageView android:id="@+id/image_estate"
 		            android:layout_width="25dp"
 		        	android:layout_height="25dp"
-		        	android:background="@drawable/marker_presale"
+		        	android:background="@drawable/marker_presell"
 		        	android:layout_marginLeft="5dp"
 		            />
 		          <TextView 
@@ -113,22 +113,28 @@
 	    		<ImageButton android:id="@+id/image_btn_focus"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
-			        android:src="@drawable/icon_access_location"
+			        android:src="@drawable/icon_access_location_white"
 			        android:background="@drawable/grid_selector"
+			        android:padding="5dp"
+			        android:scaleType="fitXY"
 	    		    />
 	    		<ImageButton android:id="@+id/image_btn_layers"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
-			        android:src="@drawable/icon_layers"
+			        android:src="@drawable/icon_layers_white"
 			        android:layout_marginTop="10dp"
 			        android:background="@drawable/grid_selector"
+			        android:padding="8dp"
+			        android:scaleType="fitXY"
 	    		    />
 	    		<ImageButton android:id="@+id/image_btn_filter"
 	    		    android:layout_width="42dp"
 			        android:layout_height="42dp"
-			        android:src="@drawable/icon_filter"
+			        android:src="@drawable/icon_filter_white"
 			        android:layout_marginTop="10dp"
 			        android:background="@drawable/grid_selector"
+			        android:padding="8dp"
+			        android:scaleType="fitXY"
 	    		    />
     		</LinearLayout>
     		

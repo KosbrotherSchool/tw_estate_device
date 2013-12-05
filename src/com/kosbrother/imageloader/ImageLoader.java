@@ -48,7 +48,7 @@ public class ImageLoader
 		REQUIRED_SIZE = size;
 	}
 
-	final int stub_id = R.drawable.ic_launcher;
+	final int stub_id = R.drawable.app_icon;
 
 	public void DisplayImage(String url, ImageView imageView)
 	{

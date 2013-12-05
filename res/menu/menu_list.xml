@@ -5,14 +5,14 @@
         android:id="@+id/menu_map"
         android:title="@string/menu_map"
         android:showAsAction="always"
-        android:icon="@drawable/icon_map"
+        android:icon="@drawable/icon_map_white"
         />
 	
 	<item
         android:id="@+id/menu_sorting"
         android:title="@string/menu_sorting"
         android:showAsAction="always"
-        android:icon="@drawable/icon_sorting"
+        android:icon="@drawable/icon_sorting_white"
         /> 
         
 </menu>

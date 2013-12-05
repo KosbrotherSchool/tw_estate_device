@@ -129,7 +129,12 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_layout);
-
+		
+		double rate = Math.pow((1 + 0.02/12), 60) * (0.02/12) / (Math.pow((1 + 0.02/12), 60) - 1);
+		double money = 700000 * rate;
+		
+		Log.i("MainActivity", "rate =" + rate + " money =" + money);
+		
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -629,7 +634,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		super.onCreateOptionsMenu(menu);
 
 		itemSearch = menu.add(0, ID_SEARCH, 0, getResources().getString(R.string.menu_search))
-				.setIcon(R.drawable.icon_search)
+				.setIcon(R.drawable.icon_search_white)
 				.setOnActionExpandListener(new MenuItem.OnActionExpandListener()
 				{
 					private EditText search;
@@ -1437,17 +1442,17 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 					if (Datas.mEstates.get(i).estate_group == 1)
 					{
-						markerView.setImageResource(R.drawable.marker_red);
+						markerView.setImageResource(R.drawable.marker_sale);
 						marker.snippet("estate");
 					} else if (Datas.mEstates.get(i).estate_group == 3)
 					{
-						markerView.setImageResource(R.drawable.marker_green);
+						markerView.setImageResource(R.drawable.marker_rent);
 						marker.snippet("rent");
 						// googleMap.addMarker(new
 						// MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green)));
 					} else if (Datas.mEstates.get(i).estate_group == 2)
 					{
-						markerView.setImageResource(R.drawable.marker_presale);
+						markerView.setImageResource(R.drawable.marker_presell);
 						marker.snippet("pre_sale");
 						// googleMap.addMarker(new
 						// MarkerOptions().position(newLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_presale)));

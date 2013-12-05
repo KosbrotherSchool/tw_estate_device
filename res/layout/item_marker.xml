@@ -13,7 +13,7 @@
     	<ImageView android:id="@+id/image_marker"
 		       android:layout_width="25dp"
 		       android:layout_height="25dp"
-		       android:background="@drawable/marker_red"
+		       android:background="@drawable/marker_sale"
 		        />
     	<TextView android:id="@+id/text_marker_price"
     	    android:layout_width="wrap_content"

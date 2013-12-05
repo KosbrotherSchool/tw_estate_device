@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RealEstate</string>
+    <string name="app_name">Zillion 實價登錄</string>
     <string name="hello_world">Hello world!</string>
     
     <string name="menu_search">搜索</string>
