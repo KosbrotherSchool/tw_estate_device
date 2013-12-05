@@ -1,6 +1,8 @@
 package com.kosbrother.realestate;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -116,25 +120,26 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	private boolean isPreSaleMarkerShow = true;
 	private int salePerSquareMin = 0;
 	// if is 0, means no need to add query string
-	private int salePerSquareMax = 0; 
+	private int salePerSquareMax = 0;
 	private int saleTotalMin = 0;
 	// if is 0, means no need to add query string
-	private int saleTotalMax = 0; 
+	private int saleTotalMax = 0;
 	private double saleAreaMin = 0;
 	// if is 0, means no need to add query string
-	private double saleAreaMax = 0; 
+	private double saleAreaMax = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_layout);
-		
-		double rate = Math.pow((1 + 0.02/12), 60) * (0.02/12) / (Math.pow((1 + 0.02/12), 60) - 1);
+
+		double rate = Math.pow((1 + 0.02 / 12), 60) * (0.02 / 12)
+				/ (Math.pow((1 + 0.02 / 12), 60) - 1);
 		double money = 700000 * rate;
-		
+
 		Log.i("MainActivity", "rate =" + rate + " money =" + money);
-		
+
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -271,26 +276,32 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		final EditText editSaleTotalMax = (EditText) vDialog.findViewById(R.id.sale_total_max);
 		final EditText editSaleAreaMin = (EditText) vDialog.findViewById(R.id.sale_area_min);
 		final EditText editSaleAreaMax = (EditText) vDialog.findViewById(R.id.sale_area_max);
-		
-		if (salePerSquareMin != 0){
+
+		if (salePerSquareMin != 0)
+		{
 			editSalePerSquareMin.setText(Integer.toString(salePerSquareMin));
 		}
-		if (salePerSquareMax != 0){
+		if (salePerSquareMax != 0)
+		{
 			editSalePerSquareMax.setText(Integer.toString(salePerSquareMax));
 		}
-		if (saleTotalMin != 0){
+		if (saleTotalMin != 0)
+		{
 			editSaleTotalMin.setText(Integer.toString(saleTotalMin));
 		}
-		if (saleTotalMax != 0){
+		if (saleTotalMax != 0)
+		{
 			editSaleTotalMax.setText(Integer.toString(saleTotalMax));
 		}
-		if (saleAreaMin != 0.0){
+		if (saleAreaMin != 0.0)
+		{
 			editSaleAreaMin.setText(Double.toString(saleAreaMin));
 		}
-		if (saleAreaMax != 0.0){
+		if (saleAreaMax != 0.0)
+		{
 			editSaleAreaMax.setText(Double.toString(saleAreaMax));
 		}
-		
+
 		if (isSaledMarkerShow)
 		{
 			saleCheckBox.setChecked(true);
@@ -314,7 +325,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		{
 			preSaleBox.setChecked(false);
 		}
-		
+
 		saleCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener()
 		{
 
@@ -654,22 +665,39 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 								if (actionId == EditorInfo.IME_ACTION_SEARCH
 										|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
 								{
-									// Bundle bundle = new Bundle();
-									// bundle.putString("SearchKeyword",
-									// v.getText().toString());
-									// Intent intent = new Intent();
-									// intent.setClass(MainActivity.this,
-									// SearchActivity.class);
-									// intent.putExtras(bundle);
-									// startActivity(intent);
-									// itemSearch.collapseActionView();
+									String inputString = v.getText().toString();
+									Geocoder geocoder = new Geocoder(MainActivity.this);
+									List<Address> addresses = null;
+									Address address = null;
+									InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+									imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+									try
+									{
+										addresses = geocoder.getFromLocationName(inputString, 1);
+									} catch (Exception e)
+									{
+										Log.e("MainActivity", e.toString());
+									}
+									if (addresses == null || addresses.isEmpty())
+									{
+										Toast.makeText(MainActivity.this, "無此地點",
+												Toast.LENGTH_SHORT).show();
+									} else
+									{
+										address = addresses.get(0);
+										double geoLat = address.getLatitude();
+										double geoLong = address.getLongitude();
+										currentLatLng = new LatLng(geoLat, geoLong);
+										googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+												currentLatLng.latitude, currentLatLng.longitude), 16.0f));
+									}
 									return true;
 								}
 								return false;
 							}
 						});
 						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-						imm.showSoftInput(null, InputMethodManager.SHOW_IMPLICIT);
+						imm.showSoftInput(search, InputMethodManager.SHOW_IMPLICIT);
 						return true;
 					}
 

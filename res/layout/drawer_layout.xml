@@ -63,6 +63,7 @@
 		            android:text="買賣"
 		            android:layout_marginLeft="5dp"
 		            android:textColor="@color/white"
+		            android:textSize="@dimen/dialog_text_size"
 		             />
 		         <ImageView android:id="@+id/image_estate"
 		            android:layout_width="25dp"
@@ -76,6 +77,7 @@
 		            android:text="租賃"
 		            android:layout_marginLeft="5dp"
 		            android:textColor="@color/white"
+		            android:textSize="@dimen/dialog_text_size"
 		             />
 		          <ImageView android:id="@+id/image_estate"
 		            android:layout_width="25dp"
@@ -89,14 +91,16 @@
 		            android:text="預售"
 		            android:layout_marginLeft="5dp"
 		            android:textColor="@color/white"
+		            android:textSize="@dimen/dialog_text_size"
 		             />
 		          
 		          <TextView 
 		            android:layout_width="fill_parent"
 		            android:layout_height="25dp"
 		            android:text="單位:萬元/坪"
-		            android:gravity="right"
+		            android:gravity="right|center_vertical"
 		            android:textColor="@color/white"
+		            android:textSize="@dimen/dialog_small_text_size"
 		             />
 		          
 		    </LinearLayout>
