@@ -1,28 +1,39 @@
 package com.kosbrother.realestate.fragment;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.j256.ormlite.dao.Dao;
 import com.kosbrother.imageloader.ImageLoader;
+import com.kosbrother.realestate.Constants;
 import com.kosbrother.realestate.Datas;
+import com.kosbrother.realestate.DetailActivity;
 import com.kosbrother.realestate.R;
 import com.kosbrother.realestate.api.InfoParserApi;
+import com.kosbrother.realestate.data.OrmRealEstate;
 
 public class DetailFragment extends Fragment
 {
 	int mNum;
 	private ImageLoader imageLoader;
-
+	private static DetailActivity mActivity;
+	
 	/**
 	 * Create a new instance of CountingFragment, providing "num" as an
 	 * argument.
 	 */
-	public static DetailFragment newInstance(int num)
+	public static DetailFragment newInstance(int num, DetailActivity theDetailActivity)
 	{
 		DetailFragment f = new DetailFragment();
 
@@ -30,6 +41,7 @@ public class DetailFragment extends Fragment
 		Bundle args = new Bundle();
 		args.putInt("num", num);
 		f.setArguments(args);
+		mActivity = theDetailActivity;
 
 		return f;
 	}
@@ -103,7 +115,77 @@ public class DetailFragment extends Fragment
 				.findViewById(R.id.text_detail_parking_exchange_area);
 		TextView text_parking_total_price = (TextView) v
 				.findViewById(R.id.text_detail_parking_total_price);
+		
+        CheckBox checkBoxFavorite = (CheckBox) v.findViewById(R.id.checkbox_favorite);
+        checkBoxFavorite.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
 
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if (isChecked)
+				{
+					// add to favorite (database)
+					try
+					{
+						Dao<OrmRealEstate, Integer> estateDao = mActivity.getHelper().getOrmEsateDao();
+						OrmRealEstate newEstate = new OrmRealEstate();
+						newEstate.estate_id = Datas.mEstates.get(mNum).id;
+						newEstate.estate_group = Datas.mEstates.get(mNum).estate_group;
+						newEstate.estate_town = Datas.mEstates.get(mNum).estate_town;
+						newEstate.estate_type = Datas.mEstates.get(mNum).estate_type;
+						newEstate.estate_address = Datas.mEstates.get(mNum).estate_address;
+						
+						newEstate.ground_exchange_area = Datas.mEstates.get(mNum).ground_exchange_area;
+						newEstate.ground_rent_area = Datas.mEstates.get(mNum).ground_rent_area;
+						newEstate.ground_usage = Datas.mEstates.get(mNum).ground_usage;
+						newEstate.date_buy = Datas.mEstates.get(mNum).date_buy;
+						newEstate.content_buy = Datas.mEstates.get(mNum).content_buy;
+						newEstate.date_rent = Datas.mEstates.get(mNum).date_rent;
+						newEstate.content_rent = Datas.mEstates.get(mNum).content_rent;
+						
+						newEstate.rent_layer = Datas.mEstates.get(mNum).rent_layer;
+						newEstate.buy_layer = Datas.mEstates.get(mNum).buy_layer;
+						newEstate.building_total_layer = Datas.mEstates.get(mNum).building_total_layer;
+						newEstate.building_type = Datas.mEstates.get(mNum).building_type;
+						newEstate.main_purpose = Datas.mEstates.get(mNum).main_purpose;
+						newEstate.main_material = Datas.mEstates.get(mNum).main_material;
+						newEstate.date_built = Datas.mEstates.get(mNum).date_built;
+						
+						newEstate.building_exchange_area = Datas.mEstates.get(mNum).building_exchange_area;
+						newEstate.building_room = Datas.mEstates.get(mNum).building_room;
+						newEstate.building_sitting_room = Datas.mEstates.get(mNum).building_sitting_room;
+						newEstate.building_rest_room = Datas.mEstates.get(mNum).building_rest_room;
+						
+						newEstate.is_guarding = Datas.mEstates.get(mNum).is_guarding;
+						newEstate.is_having_furniture = Datas.mEstates.get(mNum).is_having_furniture;
+						
+						newEstate.buy_total_price = Datas.mEstates.get(mNum).buy_total_price;
+						newEstate.buy_per_square_feet = Datas.mEstates.get(mNum).buy_per_square_feet;
+						
+						newEstate.parking_type = Datas.mEstates.get(mNum).parking_type;
+						newEstate.parking_exchange_area = Datas.mEstates.get(mNum).parking_exchange_area;
+						newEstate.parking_total_price = Datas.mEstates.get(mNum).parking_total_price;
+						
+						newEstate.x_lat = Datas.mEstates.get(mNum).x_lat;
+						newEstate.y_long = Datas.mEstates.get(mNum).y_long;
+						estateDao.create(newEstate);
+//						List<OrmRealEstate> estatesList = estateDao.queryForAll();
+						
+					} catch (SQLException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else
+				{	
+					// remove from favorite
+					
+				}
+			}
+		});
+        
+        
 		text_address.setText(Datas.mEstates.get(mNum).estate_address);
 		text_date
 				.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(mNum).date_buy));

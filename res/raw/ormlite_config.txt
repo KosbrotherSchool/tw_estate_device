@@ -1,0 +1,116 @@
+#
+# generated on 2013/12/06 11:56:23
+#
+# --table-start--
+dataClass=com.kosbrother.realestate.data.OrmRealEstate
+tableName=ormrealestate
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=estate_id
+# --field-end--
+# --field-start--
+fieldName=estate_group
+# --field-end--
+# --field-start--
+fieldName=estate_town
+# --field-end--
+# --field-start--
+fieldName=estate_type
+# --field-end--
+# --field-start--
+fieldName=estate_address
+# --field-end--
+# --field-start--
+fieldName=ground_exchange_area
+# --field-end--
+# --field-start--
+fieldName=ground_rent_area
+# --field-end--
+# --field-start--
+fieldName=ground_usage
+# --field-end--
+# --field-start--
+fieldName=date_buy
+# --field-end--
+# --field-start--
+fieldName=content_buy
+# --field-end--
+# --field-start--
+fieldName=date_rent
+# --field-end--
+# --field-start--
+fieldName=content_rent
+# --field-end--
+# --field-start--
+fieldName=rent_layer
+# --field-end--
+# --field-start--
+fieldName=buy_layer
+# --field-end--
+# --field-start--
+fieldName=building_total_layer
+# --field-end--
+# --field-start--
+fieldName=building_type
+# --field-end--
+# --field-start--
+fieldName=main_purpose
+# --field-end--
+# --field-start--
+fieldName=main_material
+# --field-end--
+# --field-start--
+fieldName=date_built
+# --field-end--
+# --field-start--
+fieldName=building_exchange_area
+# --field-end--
+# --field-start--
+fieldName=building_room
+# --field-end--
+# --field-start--
+fieldName=building_sitting_room
+# --field-end--
+# --field-start--
+fieldName=building_rest_room
+# --field-end--
+# --field-start--
+fieldName=is_guarding
+# --field-end--
+# --field-start--
+fieldName=is_having_furniture
+# --field-end--
+# --field-start--
+fieldName=buy_total_price
+# --field-end--
+# --field-start--
+fieldName=buy_per_square_feet
+# --field-end--
+# --field-start--
+fieldName=rent_total_price
+# --field-end--
+# --field-start--
+fieldName=rent_per_square_feet
+# --field-end--
+# --field-start--
+fieldName=parking_type
+# --field-end--
+# --field-start--
+fieldName=parking_exchange_area
+# --field-end--
+# --field-start--
+fieldName=parking_total_price
+# --field-end--
+# --field-start--
+fieldName=x_lat
+# --field-end--
+# --field-start--
+fieldName=y_long
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

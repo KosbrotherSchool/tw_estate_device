@@ -115,18 +115,18 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	private boolean isRunAsync = true;
 
 	// filter function params
-	private boolean isSaledMarkerShow = true;
-	private boolean isRentMarkerShow = true;
-	private boolean isPreSaleMarkerShow = true;
-	private int salePerSquareMin = 0;
-	// if is 0, means no need to add query string
-	private int salePerSquareMax = 0;
-	private int saleTotalMin = 0;
-	// if is 0, means no need to add query string
-	private int saleTotalMax = 0;
-	private double saleAreaMin = 0;
-	// if is 0, means no need to add query string
-	private double saleAreaMax = 0;
+//	private boolean isSaledMarkerShow = true;
+//	private boolean isRentMarkerShow = true;
+//	private boolean isPreSaleMarkerShow = true;
+//	private int salePerSquareMin = 0;
+//	// if is 0, means no need to add query string
+//	private int salePerSquareMax = 0;
+//	private int saleTotalMin = 0;
+//	// if is 0, means no need to add query string
+//	private int saleTotalMax = 0;
+//	private double saleAreaMin = 0;
+//	// if is 0, means no need to add query string
+//	private double saleAreaMax = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -277,32 +277,32 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		final EditText editSaleAreaMin = (EditText) vDialog.findViewById(R.id.sale_area_min);
 		final EditText editSaleAreaMax = (EditText) vDialog.findViewById(R.id.sale_area_max);
 
-		if (salePerSquareMin != 0)
+		if (Constants.salePerSquareMin != 0)
 		{
-			editSalePerSquareMin.setText(Integer.toString(salePerSquareMin));
+			editSalePerSquareMin.setText(Integer.toString(Constants.salePerSquareMin));
 		}
-		if (salePerSquareMax != 0)
+		if (Constants.salePerSquareMax != 0)
 		{
-			editSalePerSquareMax.setText(Integer.toString(salePerSquareMax));
+			editSalePerSquareMax.setText(Integer.toString(Constants.salePerSquareMax));
 		}
-		if (saleTotalMin != 0)
+		if (Constants.saleTotalMin != 0)
 		{
-			editSaleTotalMin.setText(Integer.toString(saleTotalMin));
+			editSaleTotalMin.setText(Integer.toString(Constants.saleTotalMin));
 		}
-		if (saleTotalMax != 0)
+		if (Constants.saleTotalMax != 0)
 		{
-			editSaleTotalMax.setText(Integer.toString(saleTotalMax));
+			editSaleTotalMax.setText(Integer.toString(Constants.saleTotalMax));
 		}
-		if (saleAreaMin != 0.0)
+		if (Constants.saleAreaMin != 0.0)
 		{
-			editSaleAreaMin.setText(Double.toString(saleAreaMin));
+			editSaleAreaMin.setText(Double.toString(Constants.saleAreaMin));
 		}
-		if (saleAreaMax != 0.0)
+		if (Constants.saleAreaMax != 0.0)
 		{
-			editSaleAreaMax.setText(Double.toString(saleAreaMax));
+			editSaleAreaMax.setText(Double.toString(Constants.saleAreaMax));
 		}
 
-		if (isSaledMarkerShow)
+		if (Constants.isSaledMarkerShow)
 		{
 			saleCheckBox.setChecked(true);
 		} else
@@ -310,7 +310,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			saleCheckBox.setChecked(false);
 		}
 
-		if (isRentMarkerShow)
+		if (Constants.isRentMarkerShow)
 		{
 			rentCheckBox.setChecked(true);
 		} else
@@ -318,7 +318,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			rentCheckBox.setChecked(false);
 		}
 
-		if (isPreSaleMarkerShow)
+		if (Constants.isPreSaleMarkerShow)
 		{
 			preSaleBox.setChecked(true);
 		} else
@@ -334,10 +334,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			{
 				if (isChecked)
 				{
-					isSaledMarkerShow = true;
+					Constants.isSaledMarkerShow = true;
 				} else
 				{
-					isSaledMarkerShow = false;
+					Constants.isSaledMarkerShow = false;
 				}
 			}
 		});
@@ -350,10 +350,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			{
 				if (isChecked)
 				{
-					isRentMarkerShow = true;
+					Constants.isRentMarkerShow = true;
 				} else
 				{
-					isRentMarkerShow = false;
+					Constants.isRentMarkerShow = false;
 				}
 
 			}
@@ -367,10 +367,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			{
 				if (isChecked)
 				{
-					isPreSaleMarkerShow = true;
+					Constants.isPreSaleMarkerShow = true;
 				} else
 				{
-					isPreSaleMarkerShow = false;
+					Constants.isPreSaleMarkerShow = false;
 				}
 			}
 		});
@@ -403,47 +403,47 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			{
 				try
 				{
-					salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText().toString());
+					Constants.salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText().toString());
 				} catch (Exception e)
 				{
-					salePerSquareMin = 0;
+					Constants.salePerSquareMin = 0;
 				}
 				try
 				{
-					salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText().toString());
+					Constants.salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText().toString());
 				} catch (Exception e)
 				{
-					salePerSquareMax = 0;
+					Constants.salePerSquareMax = 0;
 				}
 				try
 				{
-					saleTotalMin = Integer.parseInt(editSaleTotalMin.getText().toString());
+					Constants.saleTotalMin = Integer.parseInt(editSaleTotalMin.getText().toString());
 				} catch (Exception e)
 				{
-					saleTotalMin = 0;
+					Constants.saleTotalMin = 0;
 				}
 				try
 				{
-					saleTotalMax = Integer.parseInt(editSaleTotalMax.getText().toString());
+					Constants.saleTotalMax = Integer.parseInt(editSaleTotalMax.getText().toString());
 				} catch (Exception e)
 				{
-					saleTotalMax = 0;
+					Constants.saleTotalMax = 0;
 				}
 				try
 				{
-					saleAreaMin = Double.parseDouble(editSaleAreaMin.getText().toString());
+					Constants.saleAreaMin = Double.parseDouble(editSaleAreaMin.getText().toString());
 				} catch (Exception e)
 				{
-					saleAreaMin = 0;
+					Constants.saleAreaMin = 0;
 				}
 				try
 				{
-					saleAreaMax = Double.parseDouble(editSaleAreaMax.getText().toString());
+					Constants.saleAreaMax = Double.parseDouble(editSaleAreaMax.getText().toString());
 				} catch (Exception e)
 				{
-					saleAreaMax = 0;
+					Constants.saleAreaMax = 0;
 				}
-				Log.i("fffff", salePerSquareMin + " " + salePerSquareMax);
+				Log.i("fffff", Constants.salePerSquareMin + " " + Constants.salePerSquareMax);
 			}
 		}).setNegativeButton("取消", new DialogInterface.OnClickListener()
 		{
@@ -1432,9 +1432,9 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 				// TODO: handle exception
 			}
 
-			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs, isSaledMarkerShow,
-					isRentMarkerShow, isPreSaleMarkerShow, salePerSquareMin, salePerSquareMax,
-					saleTotalMin, saleTotalMax, saleAreaMin, saleAreaMax);
+			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs, Constants.isSaledMarkerShow,
+					Constants.isRentMarkerShow, Constants.isPreSaleMarkerShow, Constants.salePerSquareMin, Constants.salePerSquareMax,
+					Constants.saleTotalMin, Constants.saleTotalMax, Constants.saleAreaMin, Constants.saleAreaMax);
 
 			return null;
 		}
