@@ -4,12 +4,15 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class OrmRealEstate
 {
+	
+	public final static String Column_Estate_ID_NAME = "estate_id";
+	
 	@DatabaseField(generatedId = true)
 	public int id;
-	
-	@DatabaseField
+
+	@DatabaseField(columnName = Column_Estate_ID_NAME)
 	public int estate_id;
-	
+
 	@DatabaseField
 	public int estate_group;
 
@@ -87,11 +90,10 @@ public class OrmRealEstate
 	public double x_lat;
 	@DatabaseField
 	public double y_long;
-	
+
 	public OrmRealEstate()
 	{
 		// needed by ormlite
 	}
-	
-	
+
 }

@@ -63,6 +63,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".FavoriteDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" >

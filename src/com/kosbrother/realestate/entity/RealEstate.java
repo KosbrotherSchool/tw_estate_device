@@ -3,7 +3,7 @@ package com.kosbrother.realestate.entity;
 public class RealEstate
 {
 
-	public int id;
+	public int estate_id;
 	public int estate_group;
 
 	public String estate_town;
@@ -65,7 +65,7 @@ public class RealEstate
 			int parking_total_price, double x_lat, double y_long)
 	{
 
-		this.id = id;
+		this.estate_id = id;
 		this.estate_group = estate_group;
 
 		this.estate_town = estate_town;

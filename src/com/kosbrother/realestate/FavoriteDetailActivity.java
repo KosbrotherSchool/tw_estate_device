@@ -4,48 +4,72 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.os.Bundle;
-import android.widget.ListView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-import com.kosbrother.realestate.adapter.ListOrmEstateAdapter;
 import com.kosbrother.realestate.data.DatabaseHelper;
 import com.kosbrother.realestate.data.OrmRealEstate;
+import com.kosbrother.realestate.fragment.DetailFavoriteFragment;
 
-public class FavoriteActivity extends SherlockFragmentActivity
+public class FavoriteDetailActivity extends SherlockFragmentActivity
 {
-
-	private ListOrmEstateAdapter mAdapter;
-	private ListView mainListView;
+	int NUM_ITEMS = 0;
+	MyAdapter mAdapter;
+	ViewPager mPager;
 	private DatabaseHelper databaseHelper = null;
+	public ArrayList<OrmRealEstate> lists = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_favorite);
-
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
-
-		mainListView = (ListView) findViewById(R.id.list_estates);
-
+		setContentView(R.layout.fragment_pager);
+		// NUM_ITEMS = Datas.mEstates.size();
 		try
 		{
 			Dao<OrmRealEstate, Integer> estatesDao = getHelper().getOrmEsateDao();
-			ArrayList<OrmRealEstate> lists = new ArrayList<OrmRealEstate>(estatesDao.queryForAll());
-
-			mAdapter = new ListOrmEstateAdapter(FavoriteActivity.this, lists);
-			mainListView.setAdapter(mAdapter);
+			lists = new ArrayList<OrmRealEstate>(estatesDao.queryForAll());
+			NUM_ITEMS = lists.size();
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		mAdapter = new MyAdapter(getSupportFragmentManager());
+
+		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setAdapter(mAdapter);
+
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+	}
+
+	public class MyAdapter extends FragmentStatePagerAdapter
+	{
+		public MyAdapter(FragmentManager fm)
+		{
+			super(fm);
+		}
+
+		@Override
+		public int getCount()
+		{
+			return NUM_ITEMS;
+		}
+
+		@Override
+		public Fragment getItem(int position)
+		{
+			return DetailFavoriteFragment.newInstance(position, FavoriteDetailActivity.this);
+		}
 	}
 
 	@Override
@@ -60,13 +84,6 @@ public class FavoriteActivity extends SherlockFragmentActivity
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-
 	}
 
 	@Override

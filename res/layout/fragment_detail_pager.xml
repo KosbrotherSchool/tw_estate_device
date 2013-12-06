@@ -52,12 +52,15 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:layout_margin="2dp"
+                     >
 	
                     <CheckBox 
                         android:id="@+id/checkbox_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:button="@drawable/custom_checkbox"
                         />
                     
                     <TextView
@@ -68,7 +71,9 @@
                         android:gravity="center_vertical"
                         android:text="臺北市文山區興隆路三段185巷7弄1~50號"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="@dimen/detail_address_size" />
+                        android:textSize="@dimen/detail_address_size"
+                        android:paddingBottom="3dp"
+                         />
                 </LinearLayout>
 
                 <ImageView

@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kosbrother.imageloader.ImageLoader;
-import com.kosbrother.realestate.DetailActivity;
+import com.kosbrother.realestate.FavoriteDetailActivity;
 import com.kosbrother.realestate.R;
 import com.kosbrother.realestate.api.InfoParserApi;
 import com.kosbrother.realestate.data.OrmRealEstate;
@@ -137,7 +137,7 @@ public class ListOrmEstateAdapter  extends BaseAdapter
 				// v.findViewById(R.id.text_playlist_title);
 				// String title = titleView.getText().toString();
 
-				Intent intent = new Intent(activity, DetailActivity.class);
+				Intent intent = new Intent(activity, FavoriteDetailActivity.class);
 				activity.startActivity(intent);
 
 			}
