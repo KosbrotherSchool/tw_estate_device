@@ -18,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="應繳金額"
+                android:text="每月應繳金額"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <LinearLayout
