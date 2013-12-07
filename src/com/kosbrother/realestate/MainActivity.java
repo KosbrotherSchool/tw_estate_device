@@ -205,8 +205,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 					if (position == 5) // 房貸計算機
 					{
-						Toast.makeText(MainActivity.this, "pos=" + position,
-								Toast.LENGTH_SHORT).show();
 						
 //						// update the main content by replacing fragments
 //						Fragment fragment = CalculatorFragment.newInstance(0);
@@ -220,7 +218,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 //								.replace(R.id.map, fragment).commit();
 						
 						Intent intent=new Intent(MainActivity.this, CalculatorActivity.class);
-//						intent.setFlags(Intent.)
+						intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(intent);
 
 					}
