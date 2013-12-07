@@ -30,15 +30,9 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 	private Button calculate_btn;
 	private EditText loan_money_ed;
 	private EditText loan_period_ed;
-	private EditText grace_period_ed;
 	private EditText p1_rate_ed;
 	private EditText p1_period_ed;
-	private EditText p2_rate_ed;
-	private EditText p2_period_ed;
-	private EditText p3_rate_ed;
-	private EditText p3_period_ed;
 
-	private Context context;
 
 	/**
 	 * Create a new instance of CountingFragment, providing "num" as an
@@ -83,14 +77,9 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 
 		loan_money_ed = (EditText) v.findViewById(R.id.loan_money_ed);
 		loan_period_ed = (EditText) v.findViewById(R.id.loan_period_ed);
-		grace_period_ed = (EditText) v.findViewById(R.id.grace_period_ed);
 
 		p1_rate_ed = (EditText) v.findViewById(R.id.p1_rate_ed);
 		p1_period_ed = (EditText) v.findViewById(R.id.p1_period_ed);
-		p2_rate_ed = (EditText) v.findViewById(R.id.p2_rate_ed);
-		p2_period_ed = (EditText) v.findViewById(R.id.p2_period_ed);
-		p3_rate_ed = (EditText) v.findViewById(R.id.p3_rate_ed);
-		p3_period_ed = (EditText) v.findViewById(R.id.p3_period_ed);
 
 		calculate_btn = (Button) v.findViewById(R.id.calculate_btn);
 		calculate_btn.setOnClickListener(this);
@@ -124,19 +113,9 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 					.getEditableText().toString());
 			double loan_period = Double.parseDouble(loan_period_ed
 					.getEditableText().toString());
-			double grace_period = Double.parseDouble(grace_period_ed
-					.getEditableText().toString());
 			double p1_rate = Double.parseDouble(p1_rate_ed.getEditableText()
 					.toString());
 			double p1_period = Double.parseDouble(p1_period_ed
-					.getEditableText().toString());
-			double p2_rate = Double.parseDouble(p2_rate_ed.getEditableText()
-					.toString());
-			double p2_period = Double.parseDouble(p2_period_ed
-					.getEditableText().toString());
-			double p3_rate = Double.parseDouble(p3_rate_ed.getEditableText()
-					.toString());
-			double p3_period = Double.parseDouble(p3_period_ed
 					.getEditableText().toString());
 
 			Intent intent = new Intent(getActivity(),
@@ -145,13 +124,8 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 			Bundle bundle = new Bundle();
 			bundle.putDouble("loan_money", loan_money);
 			bundle.putDouble("loan_period", loan_period);
-			bundle.putDouble("grace_period", grace_period);
 			bundle.putDouble("p1_rate", p1_rate);
 			bundle.putDouble("p1_period", p1_period);
-			bundle.putDouble("p2_rate", p2_rate);
-			bundle.putDouble("p2_period", p2_period);
-			bundle.putDouble("p3_rate", p3_rate);
-			bundle.putDouble("p3_period", p3_period);
 
 			intent.putExtras(bundle);
 			startActivity(intent);

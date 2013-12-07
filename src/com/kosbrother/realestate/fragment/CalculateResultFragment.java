@@ -24,17 +24,10 @@ public class CalculateResultFragment extends Fragment
 	private Button calculate_btn;
 	private TextView loan_money_show_tv;
 	private TextView loan_period_show_tv;
-	private TextView grace_period_show_tv;
 	private TextView p1_rate_show_tv;
 	private TextView p1_period_show_tv;
-	private TextView p2_rate_show_tv;
-	private TextView p2_period_show_tv;
-	private TextView p3_rate_show_tv;
-	private TextView p3_period_show_tv;
 
 	private TextView p1_money_tv;
-	private TextView p2_money_tv;
-	private TextView p3_money_tv;
 
 	/**
 	 * Create a new instance of CountingFragment, providing "num" as an
@@ -90,19 +83,11 @@ public class CalculateResultFragment extends Fragment
 		loan_money_show_tv = (TextView) v.findViewById(R.id.loan_money_show_tv);
 		loan_period_show_tv = (TextView) v
 				.findViewById(R.id.loan_period_show_tv);
-		grace_period_show_tv = (TextView) v
-				.findViewById(R.id.grace_period_show_tv);
 
 		p1_rate_show_tv = (TextView) v.findViewById(R.id.p1_rate_show_tv);
 		p1_period_show_tv = (TextView) v.findViewById(R.id.p1_period_show_tv);
-		p2_rate_show_tv = (TextView) v.findViewById(R.id.p2_rate_show_tv);
-		p2_period_show_tv = (TextView) v.findViewById(R.id.p2_period_show_tv);
-		p3_rate_show_tv = (TextView) v.findViewById(R.id.p3_rate_show_tv);
-		p3_period_show_tv = (TextView) v.findViewById(R.id.p3_period_show_tv);
 
 		p1_money_tv = (TextView) v.findViewById(R.id.p1_money_tv);
-		p2_money_tv = (TextView) v.findViewById(R.id.p2_money_tv);
-		p3_money_tv = (TextView) v.findViewById(R.id.p3_money_tv);
 
 		Bundle bundle = getArguments();
 		double loan_money = -1;
@@ -136,13 +121,8 @@ public class CalculateResultFragment extends Fragment
 
 		loan_money_show_tv.setText(fmt.format(loan_money));
 		loan_period_show_tv.setText(String.valueOf(loan_period));
-		grace_period_show_tv.setText(String.valueOf(grace_period));
 		p1_rate_show_tv.setText(String.valueOf(p1_rate));
 		p1_period_show_tv.setText(String.valueOf(p1_period));
-		p2_rate_show_tv.setText(String.valueOf(p2_rate));
-		p2_period_show_tv.setText(String.valueOf(p2_period));
-		p3_rate_show_tv.setText(String.valueOf(p3_rate));
-		p3_period_show_tv.setText(String.valueOf(p3_period));
 
 		// http://pip.moi.gov.tw/Net/C-Loan/C2.aspx
 		// 每月應付本息金額之平均攤還率＝{[(1＋月利率)^月數]×月利率}÷{[(1＋月利率)^月數]－1}
@@ -176,16 +156,7 @@ public class CalculateResultFragment extends Fragment
 
 		double money1 = calculate(loan_money, p1_rate, loan_period);
 
-//		loan_m = loan_m - money1 * p1_period;
-		Log.i("gg", "loan_m" + loan_m);
-		double money2 = calculate(loan_m, p2_rate, loan_period);
-
-//		loan_m = loan_m - money2 * p2_period;
-		double money3 = calculate(loan_m, p3_rate, loan_period);
-
 		p1_money_tv.setText(fmt.format(money1));
-		p2_money_tv.setText(fmt.format(money2));
-		p3_money_tv.setText(fmt.format(money3));
 		return v;
 	}
 
