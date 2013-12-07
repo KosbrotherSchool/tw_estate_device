@@ -102,8 +102,8 @@ public class CalculateResultFragment extends Fragment
 
 		p1_money_tv = (TextView) v.findViewById(R.id.p1_money_tv);
 		p2_money_tv = (TextView) v.findViewById(R.id.p2_money_tv);
-		p2_money_tv = (TextView) v.findViewById(R.id.p3_money_tv);
-		
+		p3_money_tv = (TextView) v.findViewById(R.id.p3_money_tv);
+
 		Bundle bundle = getArguments();
 		double loan_money = -1;
 		double loan_period = -1;
@@ -156,24 +156,8 @@ public class CalculateResultFragment extends Fragment
 		// 寬限期應繳利息＝尚未清償本金×月利率
 
 		p1_rate = p1_rate * 0.01;
-
-		// double m_p1_rate = p1_rate / 12; // 月利率
-		// double m1 = p1_period * 12; // 月數
-		double ff = (Math.pow(1 + (p1_rate / 12), (p1_period * 12)) * (p1_rate / 12))
-				/ (Math.pow(1 + (p1_rate / 12), (p1_period * 12)) - 1); // 每月應付本息金額之平均攤還率
-
-		double ff2 = loan_money * ff; // 平均每月應攤付本息金額
-
-		Log.v("TAG", "ff=" + ff + "  ff2=" + ff2);
-
-		double aaa = 700000 * 1.02 / (12 * 20);
-		Log.v("t", "aaa=" + aaa);
-
-		double aaa2 = 70 * Math.pow(1.02, 5);
-
-		double ttt = (70 * Math.pow(1.02, 5) * 0.02 / (Math.pow(1.02, 6) - 1)) / 12;
-
-		Log.v("t", "aaa2=" + ttt);
+		p2_rate = p2_rate * 0.01;
+		p3_rate = p3_rate * 0.01;
 
 		// double rate = Math.pow((1 + 0.02/12), 60) * (0.02/12) / (Math.pow((1
 		// + 0.02/12), 60) - 1);
@@ -181,16 +165,38 @@ public class CalculateResultFragment extends Fragment
 		//
 		// Log.i("MainActivity", "rate =" + rate + " money =" + money);
 
-		double rate = Math.pow((1 + p1_rate / 12), p1_period * 12)
-				* (p1_rate / 12)
-				/ (Math.pow((1 + p1_rate / 12), p1_period * 12) - 1);
-		double money = loan_money * rate;
+//		double rate = Math.pow((1 + p1_rate / 12), loan_period * 12)
+//				* (p1_rate / 12)
+//				/ (Math.pow((1 + p1_rate / 12), loan_period * 12) - 1);
+//		double money = loan_money * rate;
+//
+//		Log.i("MainActivity", "rate =" + rate + " money =" + money);
+
+		double loan_m = loan_money;
+
+		double money1 = calculate(loan_money, p1_rate, loan_period);
+
+//		loan_m = loan_m - money1 * p1_period;
+		Log.i("gg", "loan_m" + loan_m);
+		double money2 = calculate(loan_m, p2_rate, loan_period);
+
+//		loan_m = loan_m - money2 * p2_period;
+		double money3 = calculate(loan_m, p3_rate, loan_period);
+
+		p1_money_tv.setText(fmt.format(money1));
+		p2_money_tv.setText(fmt.format(money2));
+		p3_money_tv.setText(fmt.format(money3));
+		return v;
+	}
+
+	private double calculate(double m, double r, double p)
+	{
+		double rate = Math.pow((1 + r / 12), p * 12) * (r / 12)
+				/ (Math.pow((1 + r / 12), p * 12) - 1);
+		double money = m * rate;
 
 		Log.i("MainActivity", "rate =" + rate + " money =" + money);
-
-		p1_money_tv.setText(fmt.format(money));		
-		
-		return v;
+		return money;
 	}
 
 	@Override

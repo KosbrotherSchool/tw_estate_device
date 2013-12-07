@@ -67,5 +67,12 @@ public class CalculateResultActivity extends SherlockFragmentActivity
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		finish();
+		super.onBackPressed();
+	}
 
 }

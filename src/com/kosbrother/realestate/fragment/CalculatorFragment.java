@@ -141,7 +141,7 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 
 			Intent intent = new Intent(getActivity(),
 					CalculateResultActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			Bundle bundle = new Bundle();
 			bundle.putDouble("loan_money", loan_money);
 			bundle.putDouble("loan_period", loan_period);
