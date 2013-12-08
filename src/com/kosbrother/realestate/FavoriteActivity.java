@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -20,16 +21,18 @@ public class FavoriteActivity extends SherlockFragmentActivity
 	private ListOrmEstateAdapter mAdapter;
 	private ListView mainListView;
 	private DatabaseHelper databaseHelper = null;
+	private ActionBar mActionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorite);
+		mActionBar = getSupportActionBar();
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setHomeButtonEnabled(true);
 
 		mainListView = (ListView) findViewById(R.id.list_estates);
 
@@ -40,6 +43,8 @@ public class FavoriteActivity extends SherlockFragmentActivity
 
 			mAdapter = new ListOrmEstateAdapter(FavoriteActivity.this, lists);
 			mainListView.setAdapter(mAdapter);
+			
+			mActionBar.setTitle("我的最愛: " + Integer.toString(lists.size()) + "筆資料");
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block

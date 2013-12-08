@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,7 +54,7 @@ public class ListOrmEstateAdapter  extends BaseAdapter
 		return position;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent)
+	public View getView(final int position, View convertView, ViewGroup parent)
 	{
 		View vi = convertView;
 		if (convertView == null)
@@ -130,14 +131,10 @@ public class ListOrmEstateAdapter  extends BaseAdapter
 			public void onClick(View v)
 			{
 
-				// TextView idView = (TextView)
-				// v.findViewById(R.id.text_playlist_id);
-				// String id = idView.getText().toString();
-				// TextView titleView = (TextView)
-				// v.findViewById(R.id.text_playlist_title);
-				// String title = titleView.getText().toString();
-
 				Intent intent = new Intent(activity, FavoriteDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("ItemPosition", position);
+				intent.putExtras(bundle);
 				activity.startActivity(intent);
 
 			}

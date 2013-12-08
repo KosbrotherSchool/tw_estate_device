@@ -2,12 +2,15 @@ package com.kosbrother.realestate;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -16,18 +19,18 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.ActionProvider;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,11 +41,12 @@ import at.bartinger.list.item.EntryItem;
 import at.bartinger.list.item.Item;
 import at.bartinger.list.item.SectionItem;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.kosbrother.realestate.adapter.ListEstateAdapter;
 
 public class ListActivity extends SherlockFragmentActivity
@@ -56,9 +60,8 @@ public class ListActivity extends SherlockFragmentActivity
 	private ListView mDrawerListView;
 	private EntryAdapter mDrawerAdapter;
 
-	private EditText search;
-	private MenuItem itemSearch;
-	private static final int ID_SEARCH = 5;
+//	private MenuItem itemSearch;
+//	private static final int ID_SEARCH = 5;
 
 	private ListEstateAdapter mAdapter;
 	private ListView mainListView;
@@ -67,14 +70,16 @@ public class ListActivity extends SherlockFragmentActivity
 	private LinearLayout leftDrawer;
 	private LayoutInflater inflater;
 	
+	private ActionBar mActionBar;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_list_layout);
-
-		// mActionBar = createActionBarHelper();
-		// mActionBar.init();
+		mActionBar = getSupportActionBar();
+		mActionBar.setTitle("Zillion 實價登錄: "+ Integer.toString(Datas.mEstates.size()) +"筆");
+		
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -197,63 +202,6 @@ public class ListActivity extends SherlockFragmentActivity
 	{
 		super.onCreateOptionsMenu(menu);
 
-		itemSearch = menu
-				.add(0, ID_SEARCH, 0,
-						getResources().getString(R.string.menu_search))
-				.setIcon(R.drawable.icon_search_white)
-				.setOnActionExpandListener(
-						new MenuItem.OnActionExpandListener()
-						{
-							private EditText search;
-
-							@Override
-							public boolean onMenuItemActionExpand(MenuItem item)
-							{
-								search = (EditText) item.getActionView();
-								search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-								search.setInputType(InputType.TYPE_CLASS_TEXT);
-								search.requestFocus();
-								search.setOnEditorActionListener(new TextView.OnEditorActionListener()
-								{
-									@Override
-									public boolean onEditorAction(TextView v,
-											int actionId, KeyEvent event)
-									{
-										if (actionId == EditorInfo.IME_ACTION_SEARCH
-												|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-										{
-											// Bundle bundle = new Bundle();
-											// bundle.putString("SearchKeyword",
-											// v.getText().toString());
-											// Intent intent = new Intent();
-											// intent.setClass(MainActivity.this,
-											// SearchActivity.class);
-											// intent.putExtras(bundle);
-											// startActivity(intent);
-											// itemSearch.collapseActionView();
-											return true;
-										}
-										return false;
-									}
-								});
-								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								imm.showSoftInput(null,
-										InputMethodManager.SHOW_IMPLICIT);
-								return true;
-							}
-
-							@Override
-							public boolean onMenuItemActionCollapse(
-									MenuItem item)
-							{
-								// TODO Auto-generated method stub
-								search.setText("");
-								return true;
-							}
-						}).setActionView(R.layout.collapsible_edittext);
-		itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
-				| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
 		getSupportMenuInflater().inflate(R.menu.menu_list, menu);
 
 		return super.onCreateOptionsMenu(menu);
@@ -270,13 +218,10 @@ public class ListActivity extends SherlockFragmentActivity
 		{
 			switch (item.getItemId())
 			{
-			case ID_SEARCH:
-				Toast.makeText(ListActivity.this, "search", Toast.LENGTH_SHORT)
-						.show();
-				break;
 			case R.id.menu_map:
-				Toast.makeText(ListActivity.this, "Map", Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(ListActivity.this, "Map", Toast.LENGTH_SHORT)
+//						.show();
+				finish();
 				break;
 			case R.id.menu_sorting:
 

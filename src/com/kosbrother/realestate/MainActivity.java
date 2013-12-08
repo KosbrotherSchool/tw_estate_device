@@ -62,6 +62,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -89,7 +90,6 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	private ListView mDrawerListView;
 	private EntryAdapter mDrawerAdapter;
 
-	private EditText search;
 	private MenuItem itemSearch;
 	private static final int ID_SEARCH = 5;
 
@@ -100,9 +100,8 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 	// Google Map
 	private GoogleMap googleMap;
-	// static final LatLng NKUT = new LatLng(23.979548, 120.696745);
 
-	private LatLng currentLatLng;
+	// private LatLng currentLatLng;
 
 	private LayoutInflater inflater;
 	private ImageButton btnFocusButton;
@@ -113,20 +112,6 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 	// private TransparentSupportMapFragment mMapFragment;
 	private boolean isRunAsync = true;
-
-	// filter function params
-//	private boolean isSaledMarkerShow = true;
-//	private boolean isRentMarkerShow = true;
-//	private boolean isPreSaleMarkerShow = true;
-//	private int salePerSquareMin = 0;
-//	// if is 0, means no need to add query string
-//	private int salePerSquareMax = 0;
-//	private int saleTotalMin = 0;
-//	// if is 0, means no need to add query string
-//	private int saleTotalMax = 0;
-//	private double saleAreaMin = 0;
-//	// if is 0, means no need to add query string
-//	private double saleAreaMax = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -161,8 +146,8 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 				// Toast.makeText(MainActivity.this, "focus",
 				// Toast.LENGTH_SHORT)
 				// .show();
-				CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng)
-						.zoom(14).build();
+				CameraPosition cameraPosition = new CameraPosition.Builder()
+						.target(Constants.currentLatLng).zoom(14).build();
 				googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 			}
 		});
@@ -403,42 +388,48 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			{
 				try
 				{
-					Constants.salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText().toString());
+					Constants.salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText()
+							.toString());
 				} catch (Exception e)
 				{
 					Constants.salePerSquareMin = 0;
 				}
 				try
 				{
-					Constants.salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText().toString());
+					Constants.salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText()
+							.toString());
 				} catch (Exception e)
 				{
 					Constants.salePerSquareMax = 0;
 				}
 				try
 				{
-					Constants.saleTotalMin = Integer.parseInt(editSaleTotalMin.getText().toString());
+					Constants.saleTotalMin = Integer
+							.parseInt(editSaleTotalMin.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleTotalMin = 0;
 				}
 				try
 				{
-					Constants.saleTotalMax = Integer.parseInt(editSaleTotalMax.getText().toString());
+					Constants.saleTotalMax = Integer
+							.parseInt(editSaleTotalMax.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleTotalMax = 0;
 				}
 				try
 				{
-					Constants.saleAreaMin = Double.parseDouble(editSaleAreaMin.getText().toString());
+					Constants.saleAreaMin = Double
+							.parseDouble(editSaleAreaMin.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleAreaMin = 0;
 				}
 				try
 				{
-					Constants.saleAreaMax = Double.parseDouble(editSaleAreaMax.getText().toString());
+					Constants.saleAreaMax = Double
+							.parseDouble(editSaleAreaMax.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleAreaMax = 0;
@@ -493,7 +484,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 					case 1:
 						// move to position
 						CameraPosition cameraPosition = new CameraPosition.Builder()
-								.target(currentLatLng).zoom(14).build();
+								.target(Constants.currentLatLng).zoom(14).build();
 						googleMap.animateCamera(CameraUpdateFactory
 								.newCameraPosition(cameraPosition));
 						mDrawerLayout.closeDrawer(leftDrawer);
@@ -669,7 +660,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 									Geocoder geocoder = new Geocoder(MainActivity.this);
 									List<Address> addresses = null;
 									Address address = null;
-									InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 									imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 									try
 									{
@@ -687,9 +678,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 										address = addresses.get(0);
 										double geoLat = address.getLatitude();
 										double geoLong = address.getLongitude();
-										currentLatLng = new LatLng(geoLat, geoLong);
-										googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-												currentLatLng.latitude, currentLatLng.longitude), 16.0f));
+										Constants.currentLatLng = new LatLng(geoLat, geoLong);
+										googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+												new LatLng(Constants.currentLatLng.latitude,
+														Constants.currentLatLng.longitude), 16.0f));
 									}
 									return true;
 								}
@@ -1053,17 +1045,17 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			Location currentLocation = mLocationClient.getLastLocation();
 			if (currentLocation != null)
 			{
-				currentLatLng = new LatLng(currentLocation.getLatitude(),
+				Constants.currentLatLng = new LatLng(currentLocation.getLatitude(),
 						currentLocation.getLongitude());
 			} else
 			{
 				LatLng newLatLng = Setting.getLastCenter(MainActivity.this);
 				if (newLatLng.latitude != 0.0)
 				{
-					currentLatLng = newLatLng;
+					Constants.currentLatLng = newLatLng;
 				} else
 				{
-					currentLatLng = new LatLng(25.0478, 121.5172);
+					Constants.currentLatLng = new LatLng(25.0478, 121.5172);
 				}
 			}
 
@@ -1073,7 +1065,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			// .newCameraPosition(cameraPosition));
 
 			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-					currentLatLng.latitude, currentLatLng.longitude), 16.0f));
+					Constants.currentLatLng.latitude, Constants.currentLatLng.longitude), 16.0f));
 
 			googleMap.setOnMarkerClickListener(new OnMarkerClickListener()
 			{
@@ -1087,39 +1079,22 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 					return false;
 				}
 			});
+			
+			googleMap.setOnInfoWindowClickListener( new OnInfoWindowClickListener()
+			{
+				
+				@Override
+				public void onInfoWindowClick(Marker marker)
+				{
+					int item_position = Integer.parseInt(marker.getTitle());
+					Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt("ItemPosition", item_position);
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			});
 
-			// googleMap.setOnMarkerClickListener(new OnMarkerClickListener()
-			// {
-			// public boolean onMarkerClick(Marker marker)
-			// {
-			// // Check if there is an open info window
-			// if (lastOpenned != null)
-			// {
-			// // Close the info window
-			// lastOpenned.hideInfoWindow();
-			//
-			// // Is the marker the same marker that was already open
-			// if (lastOpenned.equals(marker))
-			// {
-			// // Nullify the lastOpenned object
-			// lastOpenned = null;
-			// // Return so that the info window isn't openned
-			// // again
-			// return true;
-			// }
-			// }
-			//
-			// // Open the info window for the marker
-			// marker.showInfoWindow();
-			// // Re-assign the last openned such that we can close it
-			// // later
-			// lastOpenned = marker;
-			//
-			// // Event was handled by our code do not launch default
-			// // behaviour.
-			// return true;
-			// }
-			// });
 
 			googleMap.setOnCameraChangeListener(new OnCameraChangeListener()
 			{
@@ -1418,6 +1393,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		{
 			// TODO Auto-generated method stub
 			super.onPreExecute();
+			googleMap.clear();
 		}
 
 		@Override
@@ -1433,16 +1409,16 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			}
 
 			Datas.mEstates = EstateApi.getAroundAllByAreas(latLngs, Constants.isSaledMarkerShow,
-					Constants.isRentMarkerShow, Constants.isPreSaleMarkerShow, Constants.salePerSquareMin, Constants.salePerSquareMax,
-					Constants.saleTotalMin, Constants.saleTotalMax, Constants.saleAreaMin, Constants.saleAreaMax);
+					Constants.isRentMarkerShow, Constants.isPreSaleMarkerShow,
+					Constants.salePerSquareMin, Constants.salePerSquareMax, Constants.saleTotalMin,
+					Constants.saleTotalMax, Constants.saleAreaMin, Constants.saleAreaMax);
 
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void result)
-		{
-			googleMap.clear();
+		{		
 			// super.onPostExecute(result);
 			if (Datas.mEstates != null && Datas.mEstates.size() != 0)
 			{
