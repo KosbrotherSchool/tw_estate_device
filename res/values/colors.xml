@@ -13,4 +13,7 @@
 	<color name="black">#151515</color>
     <color name="light_black">#202020</color>
 	
+    <color name="info_window_pressed">#97E3FC</color>
+    
+    
 </resources>
