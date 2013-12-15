@@ -48,6 +48,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import at.bartinger.list.item.EntryAdapter;
@@ -123,6 +124,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	private int screenHeight;
 	
 	private ArrayList<Marker> mMarkers = new ArrayList<Marker>();
+	private Marker currentMarker;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -531,205 +533,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 	}
 
-	public void showPopupWindow(int x, int y)
-	{
-		final int positionArraySize = markerIntArray.size();
-		
-		LinearLayout v = (LinearLayout) inflater.inflate(R.layout.item_window_info, null);
-		final LinearLayout layoutInfo = (LinearLayout) v.findViewById(R.id.linear_window_info);
-		final TextView textPosition = (TextView) v.findViewById(R.id.text_info_position);
-		textPosition.setText(Integer.toString(0));
-		
-		final TextView textNumTotalNum = (TextView) v.findViewById(R.id.text_num_total_num);
-		textNumTotalNum.setText("1/" + Integer.toString(positionArraySize));
-		
-		ImageButton buttonBack = (ImageButton) v.findViewById(R.id.button_info_back);
-		ImageButton buttonForward = (ImageButton) v.findViewById(R.id.button_info_forward);
-		
-		if (positionArraySize == 1){
-			buttonBack.setVisibility(View.GONE);
-			buttonForward.setVisibility(View.GONE);
-		}else{
-			buttonBack.setVisibility(View.VISIBLE);
-			buttonForward.setVisibility(View.VISIBLE);
-		}
-		
-		final TextView textAddress = (TextView) v.findViewById(R.id.text_info_address);
-
-		final TextView textHouseAge = (TextView) v.findViewById(R.id.text_info_house_age);
-		final TextView textBuyDate = (TextView) v.findViewById(R.id.text_info_buy_date);
-
-		final TextView textGroundArea = (TextView) v.findViewById(R.id.text_info_ground_area);
-		final TextView textEstateType = (TextView) v.findViewById(R.id.text_info_estate_type);
-
-		final TextView textTotalPrice = (TextView) v.findViewById(R.id.text_info_total_price);
-		final TextView textBuildingType = (TextView) v.findViewById(R.id.text_info_buiding_type);
-
-		final TextView textBuyPerSquareFeet = (TextView) v
-				.findViewById(R.id.text_info_buy_persquare_feet);
-		final TextView textBuyLayer = (TextView) v.findViewById(R.id.text_info_buy_layer);
-
-		final TextView textRooms = (TextView) v.findViewById(R.id.text_info_rooms);
-		final TextView textIsGuarding = (TextView) v.findViewById(R.id.text_info_is_guarding);
-
-		textAddress.setText(Datas.mEstates.get(markerIntArray.get(0)).estate_address);
-
-		textHouseAge
-				.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(0)).date_built));
-		textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(0)).date_buy));
-
-		textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
-				.get(markerIntArray.get(0)).building_exchange_area));
-		textEstateType
-				.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(0)).estate_type));
-
-		textTotalPrice
-				.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(0)).buy_total_price));
-		textBuildingType
-				.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(0)).building_type));
-
-		textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
-				.get(markerIntArray.get(0)).buy_per_square_feet));
-		textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(0)).buy_layer + "/"
-				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_total_layer));
-
-		textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_room) + "房"
-				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_sitting_room) + "廳"
-				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_rest_room) + "衛浴");
-		textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(0)).is_guarding);
-
-		layoutInfo.setOnClickListener(new OnClickListener()
-		{
-			
-			@Override
-			public void onClick(View v)
-			{
-//				TextView positionText = (TextView) v.findViewById(R.id.text_info_position);
-				int num = Integer.parseInt(textPosition.getText().toString());
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putInt("ItemPosition", markerIntArray.get(num));
-				intent.putExtras(bundle);
-				startActivity(intent);
-			}
-		});
-
-		buttonBack.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-//				Toast.makeText(MainActivity.this, "back", Toast.LENGTH_SHORT).show();
-				int currentNum = Integer.parseInt(textPosition.getText().toString());
-				if (currentNum == 0){
-					currentNum = positionArraySize -1 ;
-				}else{
-					currentNum = currentNum -1;
-				}
-				
-				textPosition.setText(Integer.toString(currentNum));
-				textNumTotalNum.setText(Integer.toString(currentNum+1) +"/" + Integer.toString(positionArraySize));
-				
-				textAddress.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_address);
-
-				textHouseAge
-						.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(currentNum)).date_built));
-				textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(currentNum)).date_buy));
-
-				textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
-						.get(markerIntArray.get(currentNum)).building_exchange_area));
-				textEstateType
-						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_type));
-
-				textTotalPrice
-						.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_total_price));
-				textBuildingType
-						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).building_type));
-
-				textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
-						.get(markerIntArray.get(currentNum)).buy_per_square_feet));
-				textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_layer + "/"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_total_layer));
-
-				textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_room) + "房"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_sitting_room) + "廳"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_rest_room) + "衛浴");
-				textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).is_guarding);
-			}
-		});
-
-		buttonForward.setOnClickListener(new OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-//				Toast.makeText(MainActivity.this, "forward", Toast.LENGTH_SHORT).show();
-				int currentNum = Integer.parseInt(textPosition.getText().toString());
-				if (currentNum == positionArraySize -1){
-					currentNum = 0;
-				}else{
-					currentNum = currentNum + 1;
-				}
-				textPosition.setText(Integer.toString(currentNum));
-				textNumTotalNum.setText(Integer.toString(currentNum+1) +"/" + Integer.toString(positionArraySize));
-				
-				textAddress.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_address);
-
-				textHouseAge
-						.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(currentNum)).date_built));
-				textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(currentNum)).date_buy));
-
-				textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
-						.get(markerIntArray.get(currentNum)).building_exchange_area));
-				textEstateType
-						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_type));
-
-				textTotalPrice
-						.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_total_price));
-				textBuildingType
-						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).building_type));
-
-				textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
-						.get(markerIntArray.get(currentNum)).buy_per_square_feet));
-				textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_layer + "/"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_total_layer));
-
-				textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_room) + "房"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_sitting_room) + "廳"
-						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_rest_room) + "衛浴");
-				textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).is_guarding);
-			}
-		});
-		
-		
-		PopupWindow popupWindow = new PopupWindow(MainActivity.this);
-		popupWindow.setBackgroundDrawable(new BitmapDrawable());
-		popupWindow.setOutsideTouchable(true);
-		popupWindow.setFocusable(true);
-		popupWindow.setContentView(v);
-		popupWindow.setWindowLayoutMode(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
 	
-		// popupWindow.showAsDropDown(findViewById(R.id.tv_title), x, 10);
-		int offset_y = getPixelsFromDp(MainActivity.this, 150) / 2; 
-		int offset_x = getPixelsFromDp(MainActivity.this, 280) / 2;
-		
-		if (y > screenHeight / 2 ){
-			y = y - offset_y * 2;			
-		}else{
-			y = y + offset_y;
-		}
-		
-		if (x > screenWidth /2){
-			// do nothing
-		}else{
-			x = x - offset_x; 
-		}
-		
-		popupWindow.showAtLocation(findViewById(R.id.map_wrapper), Gravity.LEFT | Gravity.TOP, x, y);
-	}
 
 	/**
 	 * function to load map. If map is not created it will create it for you
@@ -1348,6 +1152,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 					
 					for (Marker item: mMarkers){
 						if (item.getTitle().equals(marker.getTitle())){
+							currentMarker = item;
 							View layout = inflater.inflate(R.layout.item_marker, null);
 							layout.setLayoutParams(new LinearLayout.LayoutParams(
 									LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -1769,6 +1574,341 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	{
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (dp * scale + 0.5f);
+	}
+	
+	public void showPopupWindow(int x, int y)
+	{
+		final int positionArraySize = markerIntArray.size();
+		
+		LinearLayout v = (LinearLayout) inflater.inflate(R.layout.item_window_info, null);
+		final LinearLayout layoutInfo = (LinearLayout) v.findViewById(R.id.linear_window_info);
+		final TextView textPosition = (TextView) v.findViewById(R.id.text_info_position);
+		textPosition.setText(Integer.toString(0));
+		
+		final TextView textNumTotalNum = (TextView) v.findViewById(R.id.text_num_total_num);
+		textNumTotalNum.setText("1/" + Integer.toString(positionArraySize));
+		
+		ImageButton buttonBack = (ImageButton) v.findViewById(R.id.button_info_back);
+		ImageButton buttonForward = (ImageButton) v.findViewById(R.id.button_info_forward);
+		
+		if (positionArraySize == 1){
+			buttonBack.setVisibility(View.GONE);
+			buttonForward.setVisibility(View.GONE);
+		}else{
+			buttonBack.setVisibility(View.VISIBLE);
+			buttonForward.setVisibility(View.VISIBLE);
+		}
+		
+		final TextView textAddress = (TextView) v.findViewById(R.id.text_info_address);
+
+		final TextView textHouseAge = (TextView) v.findViewById(R.id.text_info_house_age);
+		final TextView textBuyDate = (TextView) v.findViewById(R.id.text_info_buy_date);
+
+		final TextView textGroundArea = (TextView) v.findViewById(R.id.text_info_ground_area);
+		final TextView textEstateType = (TextView) v.findViewById(R.id.text_info_estate_type);
+
+		final TextView textTotalPrice = (TextView) v.findViewById(R.id.text_info_total_price);
+		final TextView textBuildingType = (TextView) v.findViewById(R.id.text_info_buiding_type);
+
+		final TextView textBuyPerSquareFeet = (TextView) v
+				.findViewById(R.id.text_info_buy_persquare_feet);
+		final TextView textBuyLayer = (TextView) v.findViewById(R.id.text_info_buy_layer);
+
+		final TextView textRooms = (TextView) v.findViewById(R.id.text_info_rooms);
+		final TextView textIsGuarding = (TextView) v.findViewById(R.id.text_info_is_guarding);
+
+		textAddress.setText(Datas.mEstates.get(markerIntArray.get(0)).estate_address);
+
+		textHouseAge
+				.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(0)).date_built));
+		textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(0)).date_buy));
+
+		textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
+				.get(markerIntArray.get(0)).building_exchange_area));
+		textEstateType
+				.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(0)).estate_type));
+
+		textTotalPrice
+				.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(0)).buy_total_price));
+		textBuildingType
+				.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(0)).building_type));
+
+		textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
+				.get(markerIntArray.get(0)).buy_per_square_feet));
+		textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(0)).buy_layer + "/"
+				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_total_layer));
+
+		textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_room) + "房"
+				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_sitting_room) + "廳"
+				+ Integer.toString(Datas.mEstates.get(markerIntArray.get(0)).building_rest_room) + "衛浴");
+		textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(0)).is_guarding);
+
+		layoutInfo.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+//				TextView positionText = (TextView) v.findViewById(R.id.text_info_position);
+				int num = Integer.parseInt(textPosition.getText().toString());
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("ItemPosition", markerIntArray.get(num));
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+
+		buttonBack.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+//				Toast.makeText(MainActivity.this, "back", Toast.LENGTH_SHORT).show();
+				int currentNum = Integer.parseInt(textPosition.getText().toString());
+				
+				// Restore last marker image
+				int lastMarkerPosition = markerIntArray.get(currentNum);
+				Marker lastMarker = mMarkers.get(lastMarkerPosition);
+				if (lastMarker!=null)
+				{
+					View layout = inflater.inflate(R.layout.item_marker, null);
+					layout.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+					TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
+					if (Datas.mEstates.get(lastMarkerPosition).estate_group == 1)
+					{
+						markerView.setImageResource(R.drawable.marker_sale);
+					} else if (Datas.mEstates.get(lastMarkerPosition).estate_group == 3)
+					{
+						markerView.setImageResource(R.drawable.marker_rent);
+					} else if (Datas.mEstates.get(lastMarkerPosition).estate_group == 2)
+					{
+						markerView.setImageResource(R.drawable.marker_presell);
+					}
+					markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+							.get(lastMarkerPosition).buy_per_square_feet));
+					Bitmap bm = loadBitmapFromView(layout);
+					// Changing marker icon
+					lastMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bm));
+				}
+				
+				
+				if (currentNum == 0){
+					currentNum = positionArraySize -1 ;
+				}else{
+					currentNum = currentNum -1;
+				}
+				
+				textPosition.setText(Integer.toString(currentNum));
+				textNumTotalNum.setText(Integer.toString(currentNum+1) +"/" + Integer.toString(positionArraySize));
+				
+				textAddress.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_address);
+
+				textHouseAge
+						.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(currentNum)).date_built));
+				textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(currentNum)).date_buy));
+
+				textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
+						.get(markerIntArray.get(currentNum)).building_exchange_area));
+				textEstateType
+						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_type));
+
+				textTotalPrice
+						.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_total_price));
+				textBuildingType
+						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).building_type));
+
+				textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
+						.get(markerIntArray.get(currentNum)).buy_per_square_feet));
+				textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_layer + "/"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_total_layer));
+
+				textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_room) + "房"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_sitting_room) + "廳"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_rest_room) + "衛浴");
+				textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).is_guarding);
+				
+				//  change current marker image
+				int currentMarkerPosition = markerIntArray.get(currentNum);
+				currentMarker = mMarkers.get(currentMarkerPosition);
+				if (lastMarker!=null)
+				{
+					View layout = inflater.inflate(R.layout.item_marker, null);
+					layout.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+					TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
+					markerView.setImageResource(R.drawable.icon_selected);
+					markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+							.get(currentMarkerPosition).buy_per_square_feet));
+					Bitmap bm = loadBitmapFromView(layout);
+					// Changing marker icon
+					currentMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bm));
+				}
+				
+			}
+		});
+
+		buttonForward.setOnClickListener(new OnClickListener()
+		{
+
+			@Override
+			public void onClick(View v)
+			{
+//				Toast.makeText(MainActivity.this, "forward", Toast.LENGTH_SHORT).show();
+				int currentNum = Integer.parseInt(textPosition.getText().toString());
+				
+				int lastMarkerPosition = markerIntArray.get(currentNum);
+				Marker lastMarker = mMarkers.get(lastMarkerPosition);
+				if (lastMarker!=null)
+				{
+					View layout = inflater.inflate(R.layout.item_marker, null);
+					layout.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+					TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
+					if (Datas.mEstates.get(lastMarkerPosition).estate_group == 1)
+					{
+						markerView.setImageResource(R.drawable.marker_sale);
+					} else if (Datas.mEstates.get(lastMarkerPosition).estate_group == 3)
+					{
+						markerView.setImageResource(R.drawable.marker_rent);
+					} else if (Datas.mEstates.get(lastMarkerPosition).estate_group == 2)
+					{
+						markerView.setImageResource(R.drawable.marker_presell);
+					}
+					markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+							.get(lastMarkerPosition).buy_per_square_feet));
+					Bitmap bm = loadBitmapFromView(layout);
+					// Changing marker icon
+					lastMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bm));
+				}
+				
+				if (currentNum == positionArraySize -1){
+					currentNum = 0;
+				}else{
+					currentNum = currentNum + 1;
+				}
+				textPosition.setText(Integer.toString(currentNum));
+				textNumTotalNum.setText(Integer.toString(currentNum+1) +"/" + Integer.toString(positionArraySize));
+				
+				textAddress.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_address);
+
+				textHouseAge
+						.setText(InfoParserApi.parseHouseAge(Datas.mEstates.get(markerIntArray.get(currentNum)).date_built));
+				textBuyDate.setText(InfoParserApi.parseBuyDate(Datas.mEstates.get(markerIntArray.get(currentNum)).date_buy));
+
+				textGroundArea.setText(InfoParserApi.parseBuildingExchangeArea(Datas.mEstates
+						.get(markerIntArray.get(currentNum)).building_exchange_area));
+				textEstateType
+						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).estate_type));
+
+				textTotalPrice
+						.setText(InfoParserApi.parseTotalBuyMoney(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_total_price));
+				textBuildingType
+						.setText(InfoParserApi.parseEstateType(Datas.mEstates.get(markerIntArray.get(currentNum)).building_type));
+
+				textBuyPerSquareFeet.setText(InfoParserApi.parsePerSquareFeetMoney(Datas.mEstates
+						.get(markerIntArray.get(currentNum)).buy_per_square_feet));
+				textBuyLayer.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).buy_layer + "/"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_total_layer));
+
+				textRooms.setText(Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_room) + "房"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_sitting_room) + "廳"
+						+ Integer.toString(Datas.mEstates.get(markerIntArray.get(currentNum)).building_rest_room) + "衛浴");
+				textIsGuarding.setText(Datas.mEstates.get(markerIntArray.get(currentNum)).is_guarding);
+				
+				int currentMarkerPosition = markerIntArray.get(currentNum);
+				currentMarker = mMarkers.get(currentMarkerPosition);
+				if (lastMarker!=null)
+				{
+					View layout = inflater.inflate(R.layout.item_marker, null);
+					layout.setLayoutParams(new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT));
+					ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+					TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
+					markerView.setImageResource(R.drawable.icon_selected);
+					markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+							.get(currentMarkerPosition).buy_per_square_feet));
+					Bitmap bm = loadBitmapFromView(layout);
+					// Changing marker icon
+					currentMarker.setIcon(BitmapDescriptorFactory.fromBitmap(bm));
+				}
+			}
+		});
+		
+		
+		PopupWindow popupWindow = new PopupWindow(MainActivity.this);
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		popupWindow.setOutsideTouchable(true);
+		popupWindow.setFocusable(true);
+		popupWindow.setContentView(v);
+		popupWindow.setWindowLayoutMode(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+	
+
+		popupWindow.setOnDismissListener(new OnDismissListener()
+		{			
+			@Override
+			public void onDismiss()
+			{
+				// TODO Auto-generated method stub
+//				Toast.makeText(MainActivity.this, "PopView Dismissed", Toast.LENGTH_SHORT).show();
+				for (Marker item: mMarkers){
+					if (item.getTitle().equals(currentMarker.getTitle())){
+						currentMarker = null;
+						int markerPosition = Integer.parseInt(item.getTitle());
+						View layout = inflater.inflate(R.layout.item_marker, null);
+						layout.setLayoutParams(new LinearLayout.LayoutParams(
+								LinearLayout.LayoutParams.WRAP_CONTENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT));
+						ImageView markerView = (ImageView) layout.findViewById(R.id.image_marker);
+						TextView markerText = (TextView) layout.findViewById(R.id.text_marker_price);
+						if (Datas.mEstates.get(markerPosition).estate_group == 1)
+						{
+							markerView.setImageResource(R.drawable.marker_sale);
+						} else if (Datas.mEstates.get(markerPosition).estate_group == 3)
+						{
+							markerView.setImageResource(R.drawable.marker_rent);
+						} else if (Datas.mEstates.get(markerPosition).estate_group == 2)
+						{
+							markerView.setImageResource(R.drawable.marker_presell);
+						}
+						markerText.setText(InfoParserApi.parsePerSquareFeetMoney_maker(Datas.mEstates
+								.get(markerPosition).buy_per_square_feet));
+						Bitmap bm = loadBitmapFromView(layout);
+						// Changing marker icon
+						item.setIcon(BitmapDescriptorFactory.fromBitmap(bm));
+						break;
+					}
+				}
+			}
+		});
+		
+		// popupWindow.showAsDropDown(findViewById(R.id.tv_title), x, 10);
+		int offset_y = getPixelsFromDp(MainActivity.this, 150) / 2; 
+		int offset_x = getPixelsFromDp(MainActivity.this, 280) / 2;
+		
+		if (y > screenHeight / 2 ){
+			y = y - offset_y * 2;			
+		}else{
+			y = y + offset_y;
+		}
+		
+		if (x > screenWidth /2){
+			// do nothing
+		}else{
+			x = x - offset_x; 
+		}
+		
+		popupWindow.showAtLocation(findViewById(R.id.map_wrapper), Gravity.LEFT | Gravity.TOP, x, y);
 	}
 
 }
