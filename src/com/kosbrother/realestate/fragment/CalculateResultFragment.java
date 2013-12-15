@@ -1,10 +1,8 @@
 package com.kosbrother.realestate.fragment;
 
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kosbrother.realestate.R;
 
@@ -92,25 +89,25 @@ public class CalculateResultFragment extends Fragment
 		Bundle bundle = getArguments();
 		double loan_money = -1;
 		double loan_period = -1;
-		double grace_period = -1;
+//		double grace_period = -1;
 		double p1_rate = -1;
 		double p1_period = -1;
-		double p2_rate = -1;
-		double p2_period = -1;
-		double p3_rate = -1;
-		double p3_period = -1;
+//		double p2_rate = -1;
+//		double p2_period = -1;
+//		double p3_rate = -1;
+//		double p3_period = -1;
 
 		if (bundle != null)
 		{
 			loan_money = bundle.getDouble("loan_money");
 			loan_period = bundle.getDouble("loan_period");
-			grace_period = bundle.getDouble("grace_period");
+//			grace_period = bundle.getDouble("grace_period");
 			p1_rate = bundle.getDouble("p1_rate");
 			p1_period = bundle.getDouble("p1_period");
-			p2_rate = bundle.getDouble("p2_rate");
-			p2_period = bundle.getDouble("p2_period");
-			p3_rate = bundle.getDouble("p3_rate");
-			p3_period = bundle.getDouble("p3_period");
+//			p2_rate = bundle.getDouble("p2_rate");
+//			p2_period = bundle.getDouble("p2_period");
+//			p3_rate = bundle.getDouble("p3_rate");
+//			p3_period = bundle.getDouble("p3_period");
 
 		}
 
@@ -136,8 +133,8 @@ public class CalculateResultFragment extends Fragment
 		// 寬限期應繳利息＝尚未清償本金×月利率
 
 		p1_rate = p1_rate * 0.01;
-		p2_rate = p2_rate * 0.01;
-		p3_rate = p3_rate * 0.01;
+//		p2_rate = p2_rate * 0.01;
+//		p3_rate = p3_rate * 0.01;
 
 		// double rate = Math.pow((1 + 0.02/12), 60) * (0.02/12) / (Math.pow((1
 		// + 0.02/12), 60) - 1);
