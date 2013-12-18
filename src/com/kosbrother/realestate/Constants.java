@@ -18,4 +18,6 @@ public class Constants
 	public static double saleAreaMax = 0;
 	public static LatLng currentLatLng;
 	
+	public static final String MEDIATION_KEY = "3fa92baa5f514278";
+	
 }

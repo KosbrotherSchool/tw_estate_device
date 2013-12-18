@@ -50,6 +50,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,9 @@ import at.bartinger.list.item.SectionItem;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -130,6 +134,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 	private ProgressDialog mProgressDialog;
 
+	private RelativeLayout adBannerLayout;
+	private AdView adMobAdView;
+	
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -259,7 +267,8 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		{
 			e.printStackTrace();
 		}
-
+		
+		CallAds();
 	}
 
 	/**
@@ -814,8 +823,9 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 	public void onBackPressed()
 	{
 		super.onBackPressed();
-//		LatLng centerLatLng = googleMap.getCameraPosition().target;
-//		Setting.saveLastCenter(centerLatLng.latitude, centerLatLng.longitude, MainActivity.this);
+		// LatLng centerLatLng = googleMap.getCameraPosition().target;
+		// Setting.saveLastCenter(centerLatLng.latitude, centerLatLng.longitude,
+		// MainActivity.this);
 		finish();
 		Datas.mEstates.clear();
 	}
@@ -1808,6 +1818,21 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		}));
 
 	}
-	
+
+	private void CallAds()
+	{
+
+		adBannerLayout = (RelativeLayout) findViewById(R.id.adLayout);
+		final AdRequest adReq = new AdRequest.Builder().build();
+
+//		12-18 17:01:12.438: I/Ads(8252): Use AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD") to get test ads on this device.
+		
+		adMobAdView = new AdView(MainActivity.this);
+		adMobAdView.setAdSize(AdSize.SMART_BANNER);
+		adMobAdView.setAdUnitId(Constants.MEDIATION_KEY);
+
+		adMobAdView.loadAd(adReq);
+		adBannerLayout.addView(adMobAdView);
+	}
 
 }
