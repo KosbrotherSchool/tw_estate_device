@@ -104,7 +104,7 @@
         android:background="@drawable/setting_text_selector"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
-        android:text="意見回餽"
+        android:text="意見回饋"
         android:textSize="@dimen/dialog_text_size" />
 
     <LinearLayout

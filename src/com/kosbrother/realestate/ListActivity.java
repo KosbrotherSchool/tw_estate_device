@@ -125,10 +125,10 @@ public class ListActivity extends SherlockFragmentActivity
 	private void setDrawerLayout()
 	{
 		// TODO Auto-generated method stub
-		items.add(new SectionItem("實價登陸搜尋"));
+		items.add(new SectionItem("實價登錄搜尋"));
 		items.add(new EntryItem("位置附近", R.drawable.icon_access_location));
 		items.add(new EntryItem("我的最愛", R.drawable.icon_favorite));
-		items.add(new EntryItem("條件塞選", R.drawable.icon_filter));
+		items.add(new EntryItem("條件篩選", R.drawable.icon_filter));
 		items.add(new SectionItem("房貸計算"));
 		items.add(new EntryItem("房貸計算機", R.drawable.icon_calculator));
 		items.add(new SectionItem("其他"));
@@ -712,7 +712,7 @@ public class ListActivity extends SherlockFragmentActivity
 		});
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
-		builder.setTitle("塞選條件");
+		builder.setTitle("條件篩選");
 		builder.setView(vDialog);
 		builder.setPositiveButton("確定", new DialogInterface.OnClickListener()
 		{
