@@ -45,6 +45,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.kosbrother.realestate.adapter.ListEstateAdapter;
@@ -60,8 +61,8 @@ public class ListActivity extends SherlockFragmentActivity
 	private ListView mDrawerListView;
 	private EntryAdapter mDrawerAdapter;
 
-//	private MenuItem itemSearch;
-//	private static final int ID_SEARCH = 5;
+	// private MenuItem itemSearch;
+	// private static final int ID_SEARCH = 5;
 
 	private ListEstateAdapter mAdapter;
 	private ListView mainListView;
@@ -69,34 +70,32 @@ public class ListActivity extends SherlockFragmentActivity
 	private int currentSortPosition;
 	private LinearLayout leftDrawer;
 	private LayoutInflater inflater;
-	
+
 	private ActionBar mActionBar;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_list_layout);
 		mActionBar = getSupportActionBar();
-		mActionBar.setTitle("Zillion 實價登錄: "+ Integer.toString(Datas.mEstates.size()) +"筆");
-		
+		mActionBar.setTitle("Zillion 實價登錄: " + Integer.toString(Datas.mEstates.size()) + "筆");
+
 		inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerListView = (ListView) findViewById(R.id.left_list_view);
 
 		// mDrawerLayout.setDrawerListener(new DemoDrawerListener());
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-				GravityCompat.START);
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		leftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close)
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+				R.string.drawer_open, R.string.drawer_close)
 		{
 			public void onDrawerClosed(View view)
 			{
@@ -138,11 +137,10 @@ public class ListActivity extends SherlockFragmentActivity
 		mDrawerAdapter = new EntryAdapter(ListActivity.this, items);
 		mDrawerListView.setAdapter(mDrawerAdapter);
 		leftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
-		
+
 		mDrawerListView.setOnItemClickListener((new OnItemClickListener()
 		{
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id)
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 			{
 				if (!items.get(position).isSection())
 				{
@@ -208,8 +206,7 @@ public class ListActivity extends SherlockFragmentActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(
-			com.actionbarsherlock.view.MenuItem item)
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item)
 	{
 		if (mDrawerToggle.onOptionsItemSelected(getMenuItem(item)))
 		{
@@ -219,22 +216,19 @@ public class ListActivity extends SherlockFragmentActivity
 			switch (item.getItemId())
 			{
 			case R.id.menu_map:
-//				Toast.makeText(ListActivity.this, "Map", Toast.LENGTH_SHORT)
-//						.show();
+				// Toast.makeText(ListActivity.this, "Map", Toast.LENGTH_SHORT)
+				// .show();
 				finish();
 				break;
 			case R.id.menu_sorting:
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						ListActivity.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
 				// Set the dialog title
-				builder.setTitle("順序排列").setSingleChoiceItems(
-						R.array.list_sort, currentSortPosition,
-						new DialogInterface.OnClickListener()
+				builder.setTitle("順序排列").setSingleChoiceItems(R.array.list_sort,
+						currentSortPosition, new DialogInterface.OnClickListener()
 						{
 							@Override
-							public void onClick(DialogInterface dialog,
-									int position)
+							public void onClick(DialogInterface dialog, int position)
 							{
 								sortingByPosition(position);
 								currentSortPosition = position;
@@ -254,28 +248,22 @@ public class ListActivity extends SherlockFragmentActivity
 		switch (position)
 		{
 		case 0:
-			Collections.sort(Datas.mEstates,
-					new Datas.BuyPerSquareComparator(0));
+			Collections.sort(Datas.mEstates, new Datas.BuyPerSquareComparator(0));
 			break;
 		case 1:
-			Collections.sort(Datas.mEstates,
-					new Datas.BuyPerSquareComparator(1));
+			Collections.sort(Datas.mEstates, new Datas.BuyPerSquareComparator(1));
 			break;
 		case 2:
-			Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(
-					0));
+			Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(0));
 			break;
 		case 3:
-			Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(
-					1));
+			Collections.sort(Datas.mEstates, new Datas.BuyTotalPriceComparator(1));
 			break;
 		case 4:
-			Collections.sort(Datas.mEstates,
-					new Datas.BuildingExchangeAreaComparator(0));
+			Collections.sort(Datas.mEstates, new Datas.BuildingExchangeAreaComparator(0));
 			break;
 		case 5:
-			Collections.sort(Datas.mEstates,
-					new Datas.BuildingExchangeAreaComparator(1));
+			Collections.sort(Datas.mEstates, new Datas.BuildingExchangeAreaComparator(1));
 			break;
 		case 6:
 			Collections.sort(Datas.mEstates, new Datas.BuiltDateComparator());
@@ -433,8 +421,7 @@ public class ListActivity extends SherlockFragmentActivity
 			}
 
 			@Override
-			public android.view.MenuItem setActionProvider(
-					ActionProvider actionProvider)
+			public android.view.MenuItem setActionProvider(ActionProvider actionProvider)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -511,8 +498,7 @@ public class ListActivity extends SherlockFragmentActivity
 			}
 
 			@Override
-			public android.view.MenuItem setOnActionExpandListener(
-					OnActionExpandListener listener)
+			public android.view.MenuItem setOnActionExpandListener(OnActionExpandListener listener)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -527,8 +513,7 @@ public class ListActivity extends SherlockFragmentActivity
 			}
 
 			@Override
-			public android.view.MenuItem setShortcut(char numericChar,
-					char alphaChar)
+			public android.view.MenuItem setShortcut(char numericChar, char alphaChar)
 			{
 				// TODO Auto-generated method stub
 				return null;
@@ -577,8 +562,7 @@ public class ListActivity extends SherlockFragmentActivity
 			}
 		};
 	}
-	
-	
+
 	protected void showFilterDialog()
 	{
 		View vDialog = inflater.inflate(R.layout.filterdialog, null);
@@ -720,42 +704,48 @@ public class ListActivity extends SherlockFragmentActivity
 			{
 				try
 				{
-					Constants.salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText().toString());
+					Constants.salePerSquareMin = Integer.parseInt(editSalePerSquareMin.getText()
+							.toString());
 				} catch (Exception e)
 				{
 					Constants.salePerSquareMin = 0;
 				}
 				try
 				{
-					Constants.salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText().toString());
+					Constants.salePerSquareMax = Integer.parseInt(editSalePerSquareMax.getText()
+							.toString());
 				} catch (Exception e)
 				{
 					Constants.salePerSquareMax = 0;
 				}
 				try
 				{
-					Constants.saleTotalMin = Integer.parseInt(editSaleTotalMin.getText().toString());
+					Constants.saleTotalMin = Integer
+							.parseInt(editSaleTotalMin.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleTotalMin = 0;
 				}
 				try
 				{
-					Constants.saleTotalMax = Integer.parseInt(editSaleTotalMax.getText().toString());
+					Constants.saleTotalMax = Integer
+							.parseInt(editSaleTotalMax.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleTotalMax = 0;
 				}
 				try
 				{
-					Constants.saleAreaMin = Double.parseDouble(editSaleAreaMin.getText().toString());
+					Constants.saleAreaMin = Double
+							.parseDouble(editSaleAreaMin.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleAreaMin = 0;
 				}
 				try
 				{
-					Constants.saleAreaMax = Double.parseDouble(editSaleAreaMax.getText().toString());
+					Constants.saleAreaMax = Double
+							.parseDouble(editSaleAreaMax.getText().toString());
 				} catch (Exception e)
 				{
 					Constants.saleAreaMax = 0;
@@ -771,7 +761,7 @@ public class ListActivity extends SherlockFragmentActivity
 		});
 		builder.show();
 	}
-	
+
 	// private ActionBarHelper createActionBarHelper() {
 	// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 	// return new ActionBarHelperICS();
@@ -850,6 +840,22 @@ public class ListActivity extends SherlockFragmentActivity
 	{
 		super.onPostCreate(savedInstanceState);
 		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		// The rest of your onStart() code.
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		// The rest of your onStop() code.
+		EasyTracker.getInstance(this).activityStop(this); // Add this method.
 	}
 
 }

@@ -62,6 +62,7 @@ import at.bartinger.list.item.SectionItem;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -136,8 +137,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 	private RelativeLayout adBannerLayout;
 	private AdView adMobAdView;
-	
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -267,7 +267,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		{
 			e.printStackTrace();
 		}
-		
+
 		CallAds();
 	}
 
@@ -1000,6 +1000,8 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 		super.onStart();
 
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
+
 		/*
 		 * Connect the client. Don't re-start any requests here; instead, wait
 		 * for onResume()
@@ -1025,6 +1027,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		mLocationClient.disconnect();
 
 		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	// private void startPeriodicUpdates() {
@@ -1825,8 +1828,10 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 		adBannerLayout = (RelativeLayout) findViewById(R.id.adLayout);
 		final AdRequest adReq = new AdRequest.Builder().build();
 
-//		12-18 17:01:12.438: I/Ads(8252): Use AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD") to get test ads on this device.
-		
+		// 12-18 17:01:12.438: I/Ads(8252): Use
+		// AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD")
+		// to get test ads on this device.
+
 		adMobAdView = new AdView(MainActivity.this);
 		adMobAdView.setAdSize(AdSize.SMART_BANNER);
 		adMobAdView.setAdUnitId(Constants.MEDIATION_KEY);

@@ -12,6 +12,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.kosbrother.realestate.data.DatabaseHelper;
 import com.kosbrother.realestate.fragment.DetailFragment;
@@ -163,6 +164,22 @@ public class DetailActivity extends SherlockFragmentActivity
 		getSupportMenuInflater().inflate(R.menu.detail, menu);
 
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		// The rest of your onStart() code.
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		// The rest of your onStop() code.
+		EasyTracker.getInstance(this).activityStop(this); // Add this method.
 	}
 
 }
