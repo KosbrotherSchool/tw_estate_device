@@ -46,7 +46,8 @@
                 android:textSize="@dimen/dialog_small_text_size" />
         </LinearLayout>
 
-        <CheckBox android:id="@+id/checkbox_estate_notify"
+        <CheckBox
+            android:id="@+id/checkbox_estate_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -65,6 +66,7 @@
         android:background="#000000" >
     </LinearLayout>
 
+    <!--
     <TextView
         android:id="@+id/text_contact_us"
         android:layout_width="fill_parent"
@@ -80,9 +82,10 @@
         android:layout_height="0.5dp"
         android:background="@color/line_gray" >
     </LinearLayout>
+    -->
 
     <TextView
-        android:id="@+id/text_contact_us"
+        android:id="@+id/text_star_us"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/setting_text_selector"
@@ -98,7 +101,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_contact_us"
+        android:id="@+id/text_feedback"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/setting_text_selector"
@@ -114,7 +117,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_contact_us"
+        android:id="@+id/text_share_app"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/setting_text_selector"
@@ -122,5 +125,17 @@
         android:paddingTop="15dp"
         android:text="分享此APP"
         android:textSize="@dimen/dialog_text_size" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/adLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

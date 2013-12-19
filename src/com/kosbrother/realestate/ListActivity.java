@@ -2,30 +2,22 @@ package com.kosbrother.realestate;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.InputType;
 import android.util.Log;
 import android.view.ActionProvider;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
@@ -34,8 +26,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 import at.bartinger.list.item.EntryAdapter;
 import at.bartinger.list.item.EntryItem;
 import at.bartinger.list.item.Item;
@@ -46,8 +37,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.kosbrother.realestate.adapter.ListEstateAdapter;
 
 public class ListActivity extends SherlockFragmentActivity
@@ -73,6 +66,9 @@ public class ListActivity extends SherlockFragmentActivity
 
 	private ActionBar mActionBar;
 
+	private RelativeLayout adBannerLayout;
+	private AdView adMobAdView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -118,7 +114,9 @@ public class ListActivity extends SherlockFragmentActivity
 		mainListView = (ListView) findViewById(R.id.list_estates);
 		mAdapter = new ListEstateAdapter(ListActivity.this, Datas.mEstates);
 		mainListView.setAdapter(mAdapter);
-
+		
+		CallAds();
+		
 	}
 
 	private void setDrawerLayout()
@@ -856,6 +854,36 @@ public class ListActivity extends SherlockFragmentActivity
 		super.onStop();
 		// The rest of your onStop() code.
 		EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
+	
+	private void CallAds()
+	{
+
+		adBannerLayout = (RelativeLayout) findViewById(R.id.adLayout);
+		final AdRequest adReq = new AdRequest.Builder().build();
+
+		// 12-18 17:01:12.438: I/Ads(8252): Use
+		// AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD")
+		// to get test ads on this device.
+
+		adMobAdView = new AdView(ListActivity.this);
+		adMobAdView.setAdSize(AdSize.SMART_BANNER);
+		adMobAdView.setAdUnitId(Constants.MEDIATION_KEY);
+
+		adMobAdView.loadAd(adReq);
+		adMobAdView.setAdListener(new AdListener()
+		{
+			@Override
+			public void onAdLoaded() {
+				adBannerLayout.setVisibility(View.VISIBLE);
+				adBannerLayout.addView(adMobAdView);
+			}
+			
+			public void onAdFailedToLoad(int errorCode) {
+				adBannerLayout.setVisibility(View.GONE);
+			}
+			
+		});	
 	}
 
 }

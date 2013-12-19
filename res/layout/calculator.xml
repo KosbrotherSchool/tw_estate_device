@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="vertical"
          >
@@ -207,5 +207,17 @@
                 android:textSize="@dimen/detail_address_size" />
         </LinearLayout>
     </LinearLayout>
+	
+     <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
+        <RelativeLayout
+            android:id="@+id/adLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" >
+        </RelativeLayout>
+    </RelativeLayout>
+    
 </LinearLayout>

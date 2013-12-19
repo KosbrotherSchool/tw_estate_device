@@ -7,12 +7,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.kosbrother.realestate.data.DatabaseHelper;
 import com.kosbrother.realestate.fragment.DetailFragment;
@@ -24,7 +30,10 @@ public class DetailActivity extends SherlockFragmentActivity
 	ViewPager mPager;
 	private DatabaseHelper databaseHelper = null;
 	private ActionBar mActionBar;
-
+	
+	private RelativeLayout adBannerLayout;
+	private AdView adMobAdView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -76,6 +85,8 @@ public class DetailActivity extends SherlockFragmentActivity
 
 			}
 		});
+		
+		CallAds();
 	}
 
 	public class MyAdapter extends FragmentStatePagerAdapter
@@ -180,6 +191,36 @@ public class DetailActivity extends SherlockFragmentActivity
 		super.onStop();
 		// The rest of your onStop() code.
 		EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
+	
+	private void CallAds()
+	{
+
+		adBannerLayout = (RelativeLayout) findViewById(R.id.adLayout);
+		final AdRequest adReq = new AdRequest.Builder().build();
+
+		// 12-18 17:01:12.438: I/Ads(8252): Use
+		// AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD")
+		// to get test ads on this device.
+
+		adMobAdView = new AdView(DetailActivity.this);
+		adMobAdView.setAdSize(AdSize.SMART_BANNER);
+		adMobAdView.setAdUnitId(Constants.MEDIATION_KEY);
+
+		adMobAdView.loadAd(adReq);
+		adMobAdView.setAdListener(new AdListener()
+		{
+			@Override
+			public void onAdLoaded() {
+				adBannerLayout.setVisibility(View.VISIBLE);
+				adBannerLayout.addView(adMobAdView);
+			}
+			
+			public void onAdFailedToLoad(int errorCode) {
+				adBannerLayout.setVisibility(View.GONE);
+			}
+			
+		});		
 	}
 
 }

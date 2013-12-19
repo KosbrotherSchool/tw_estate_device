@@ -11,9 +11,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.kosbrother.realestate.Constants;
 import com.kosbrother.realestate.R;
 
 //http://pip.moi.gov.tw/Net/C-Loan/C2.aspx
@@ -43,6 +49,9 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 	 * Create a new instance of CountingFragment, providing "num" as an
 	 * argument.
 	 */
+	
+	private RelativeLayout adBannerLayout;
+	private AdView adMobAdView;
 
 	public CalculatorFragment()
 	{
@@ -64,7 +73,8 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View v = inflater.inflate(R.layout.calculator, null);
-
+		
+		adBannerLayout = (RelativeLayout) v.findViewById(R.id.adLayout);
 		editLoanMoney = (EditText) v.findViewById(R.id.edit_loan_money);
 		editLoanRate = (EditText) v.findViewById(R.id.edit_loan_rate);
 		editLoanPeriod = (EditText) v.findViewById(R.id.edit_loan_period);
@@ -78,7 +88,7 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 		
 		imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 	    
-		
+		CallAds();
 		return v;
 	}
 
@@ -134,5 +144,35 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 		Log.i("MainActivity", "rate =" + rate + " money =" + money);
 		return money;
 	}
+	
+	private void CallAds()
+	{
 
+		
+		final AdRequest adReq = new AdRequest.Builder().build();
+
+		// 12-18 17:01:12.438: I/Ads(8252): Use
+		// AdRequest.Builder.addTestDevice("A25819A64B56C65500038B8A9E7C19DD")
+		// to get test ads on this device.
+
+		adMobAdView = new AdView(getActivity());
+		adMobAdView.setAdSize(AdSize.SMART_BANNER);
+		adMobAdView.setAdUnitId(Constants.MEDIATION_KEY);
+
+		adMobAdView.loadAd(adReq);
+		adMobAdView.setAdListener(new AdListener()
+		{
+			@Override
+			public void onAdLoaded() {
+				adBannerLayout.setVisibility(View.VISIBLE);
+				adBannerLayout.addView(adMobAdView);
+			}
+			
+			public void onAdFailedToLoad(int errorCode) {
+				adBannerLayout.setVisibility(View.GONE);
+			}
+			
+		});		
+	}
+	
 }

@@ -23,23 +23,29 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-     >
+    android:layout_height="match_parent" >
 
-   	<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-         >
-         <ListView
-             android:id="@+id/list_estates"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:background="#EBEBEB"  
-             android:divider="@null"
-			 android:dividerHeight="0dp"
-             >   
-         </ListView>
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/list_estates"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#EBEBEB"
+            android:divider="@null"
+            android:dividerHeight="0dp" >
+        </ListView>
+
+        <RelativeLayout
+            android:id="@+id/adLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
