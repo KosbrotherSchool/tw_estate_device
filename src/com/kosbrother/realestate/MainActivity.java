@@ -1051,7 +1051,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 		@Override
 		protected void onPreExecute()
-		{
+		{		
 			super.onPreExecute();
 			mProgressDialog = ProgressDialog.show(MainActivity.this, null, "資料傳遞中");
 			mProgressDialog.setCancelable(true);
@@ -1087,7 +1087,6 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			// super.onPostExecute(result);
 			if (Datas.mEstates != null && Datas.mEstates.size() != 0)
 			{
-
 				mMarkers.clear();
 
 				// Toast.makeText(MainActivity.this, "附近有 "+
@@ -1494,7 +1493,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 				{
 					if (item.getTitle().equals(currentMarker.getTitle()))
 					{
-						currentMarker = null;
+//						currentMarker = null;
 						int markerPosition = Integer.parseInt(item.getTitle());
 						View layout = inflater.inflate(R.layout.item_marker, null);
 						layout.setLayoutParams(new LinearLayout.LayoutParams(
