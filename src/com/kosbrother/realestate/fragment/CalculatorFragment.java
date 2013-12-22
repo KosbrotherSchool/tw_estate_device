@@ -165,6 +165,11 @@ public class CalculatorFragment extends Fragment implements OnClickListener
 			@Override
 			public void onAdLoaded() {
 				adBannerLayout.setVisibility(View.VISIBLE);
+				
+				if (adBannerLayout.getChildAt(0)!=null)
+				{
+					adBannerLayout.removeViewAt(0);
+				}
 				adBannerLayout.addView(adMobAdView);
 			}
 			

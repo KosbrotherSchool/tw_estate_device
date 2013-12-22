@@ -166,13 +166,32 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 			@Override
 			public void onClick(View v)
 			{
+				if (!mLocationClient.isConnected())
+				{
+					mLocationClient.connect();
+				} else
+				{
+					Location currentLocation = mLocationClient.getLastLocation();
+					if (currentLocation != null)
+					{
+						Constants.currentLatLng = new LatLng(currentLocation.getLatitude(),
+								currentLocation.getLongitude());
+					} else
+					{
+						LatLng newLatLng = Setting.getLastCenter(MainActivity.this);
+						if (newLatLng.latitude != 0.0)
+						{
+							Constants.currentLatLng = newLatLng;
+						} else
+						{
+							Constants.currentLatLng = new LatLng(25.0478, 121.5172);
+						}
+					}
 
-				// Toast.makeText(MainActivity.this, "focus",
-				// Toast.LENGTH_SHORT)
-				// .show();
-				CameraPosition cameraPosition = new CameraPosition.Builder()
-						.target(Constants.currentLatLng).zoom(14).build();
-				googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+					CameraPosition cameraPosition = new CameraPosition.Builder()
+							.target(Constants.currentLatLng).zoom(14).build();
+					googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+				}
 			}
 		});
 
@@ -1051,7 +1070,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 
 		@Override
 		protected void onPreExecute()
-		{		
+		{
 			super.onPreExecute();
 			mProgressDialog = ProgressDialog.show(MainActivity.this, null, "資料傳遞中");
 			mProgressDialog.setCancelable(true);
@@ -1493,7 +1512,7 @@ public class MainActivity extends SherlockFragmentActivity implements LocationLi
 				{
 					if (item.getTitle().equals(currentMarker.getTitle()))
 					{
-//						currentMarker = null;
+						// currentMarker = null;
 						int markerPosition = Integer.parseInt(item.getTitle());
 						View layout = inflater.inflate(R.layout.item_marker, null);
 						layout.setLayoutParams(new LinearLayout.LayoutParams(
